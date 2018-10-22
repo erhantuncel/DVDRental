@@ -17,25 +17,32 @@
         <h:body>
             <h:form id="mainForm">
                 <div class="ui-g">
-                    <div class="ui-g-3 ui-md-3"></div>
-                    <div class="ui-g-6 ui-md-6">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
                         <center><h1>DVD KİRALAMA SİSTEMİ</h1></center><br/><br/><br/><br/>
-                        <p:fieldset legend="PERSONEL GİRİŞİ">
-                            <h:panelGrid columns="2" style="margin: 10px;">
-                                <p:outputLabel value="Personel Kullancıı Adı :" for="userName"/>
-                                <p:inputText id="userName" value="" />
-                                
-                                <p:outputLabel value="Şifre :" for="password"/>
-                                <p:password id="password" value="#" />
-                                
-                                <p:outputLabel value="" />
-                                <p:commandButton value=" PERSONEL GİRİŞ"/>
-                                <p:link outcome="pageForTemplate" value="Personel Sayfası" />
-                                <p:link outcome="views/staffindex" value="Personel Sayfası - Şablon" />
-                            </h:panelGrid>
+                        <p:fieldset>
+                            <div class="ui-g">
+                                <div class="ui-g-1">
+                                </div>
+                                <div class="ui-g-10">
+                                    <h:panelGrid columns="2" style="margin: 10px;">
+                                        <p:outputLabel value="Personel Kullancı Adı :" for="userName"/>
+                                        <p:inputText id="userName" value="" />
+
+                                        <p:outputLabel value="Şifre :" for="password"/>
+                                        <p:password id="password" value="#" />
+
+                                        <p:outputLabel value="" />
+                                        <p:commandButton value=" PERSONEL GİRİŞ"/>
+                                    </h:panelGrid>
+                                </div>
+                                <div class="ui-g-1">
+                                </div>
+                            </div>
+                            
                         </p:fieldset>
                     </div>
-                    <div class="ui-g-3 ui-md-3"></div>
+                    <div class="ui-g-3"></div>
                 </div>
             </h:form>
         </h:body>
