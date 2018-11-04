@@ -6,13 +6,17 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -58,6 +62,10 @@ public class Actor implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
+    
+    // Instead of composite primary key added ManyToOne relation
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "actors")
+    private Collection<Film> films = new ArrayList<>();
 
     public Actor() {
     }
@@ -105,6 +113,14 @@ public class Actor implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public Collection<Film> getFilms() {
+        return films;
+    }
+
+    public void setFilms(Collection<Film> films) {
+        this.films = films;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

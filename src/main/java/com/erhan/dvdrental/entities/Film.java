@@ -7,6 +7,7 @@ package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -17,7 +18,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -103,6 +106,19 @@ public class Film implements Serializable {
     private Language originalLanguageId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "filmId")
     private Collection<Inventory> inventoryCollection;
+    
+    // Instead of composite primary key added ManyToOne relation
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name="film_category", 
+                joinColumns = {@JoinColumn(name="film_id")},
+                inverseJoinColumns = {@JoinColumn(name="category_id")})
+    private Collection<Category> categories = new ArrayList<>();
+    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "film_actor",
+                joinColumns = {@JoinColumn(name = "film_id")},
+                inverseJoinColumns = {@JoinColumn(name = "actor_id")})
+    private Collection<Actor> actors = new ArrayList<>();
 
     public Film() {
     }
@@ -233,6 +249,22 @@ public class Film implements Serializable {
         this.inventoryCollection = inventoryCollection;
     }
 
+    public Collection<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Collection<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(Collection<Actor> actors) {
+        this.actors = actors;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
