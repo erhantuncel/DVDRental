@@ -10,5 +10,5 @@
         <property name="URL" value="jdbc:mysql://localhost:3306/sakila"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/dvdrental" object-type="user" pool-name="mysql_sakila_rootPool"/>
+    <jdbc-resource enabled="true" jndi-name="jdbc/dvdrental" object-type="user" pool-name="mysql_sakila_rootPool"/>
 </resources>
