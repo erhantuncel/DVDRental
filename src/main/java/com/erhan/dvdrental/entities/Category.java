@@ -58,7 +58,7 @@ public class Category implements Serializable {
     private Date lastUpdate;
     
     // Instead of composite primary key added ManyToOne relation
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "categories")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "categories")
     private Collection<Film> films = new ArrayList<>();
     
 
