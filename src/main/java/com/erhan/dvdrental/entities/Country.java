@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,7 +57,7 @@ public class Country implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "countryId")
-    private Collection<City> cityCollection;
+    private List<City> cityList;
 
     public Country() {
     }
@@ -97,14 +97,14 @@ public class Country implements Serializable {
     }
 
     @XmlTransient
-    public Collection<City> getCityCollection() {
-        return cityCollection;
+    public List<City> getCityList() {
+        return cityList;
     }
 
-    public void setCityCollection(Collection<City> cityCollection) {
-        this.cityCollection = cityCollection;
+    public void setCityList(List<City> cityList) {
+        this.cityList = cityList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

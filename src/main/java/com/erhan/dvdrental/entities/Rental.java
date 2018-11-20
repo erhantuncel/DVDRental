@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,15 +62,15 @@ public class Rental implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     @ManyToOne(optional = false)
-    private Customer customerId;
+    private Customer customer;
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     @ManyToOne(optional = false)
-    private Inventory inventoryId;
+    private Inventory inventory;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @ManyToOne(optional = false)
-    private Staff staffId;
-    @OneToMany(mappedBy = "rentalId")
-    private Collection<Payment> paymentCollection;
+    private Staff staff;
+    @OneToMany(mappedBy = "rental")
+    private List<Payment> paymentList;
 
     public Rental() {
     }
@@ -117,39 +117,39 @@ public class Rental implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Inventory getInventoryId() {
-        return inventoryId;
+    public Inventory getInventory() {
+        return inventory;
     }
 
-    public void setInventoryId(Inventory inventoryId) {
-        this.inventoryId = inventoryId;
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
-    public Staff getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(Staff staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
+    public List<Payment> getPaymentList() {
+        return paymentList;
     }
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

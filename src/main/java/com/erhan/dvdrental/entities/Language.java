@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,10 +56,10 @@ public class Language implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "languageId")
-    private Collection<Film> filmCollection;
-    @OneToMany(mappedBy = "originalLanguageId")
-    private Collection<Film> filmCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "language")
+    private List<Film> filmList;
+    @OneToMany(mappedBy = "originalLanguage")
+    private List<Film> filmListOriginal;
 
     public Language() {
     }
@@ -99,21 +99,21 @@ public class Language implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Film> getFilmCollection() {
-        return filmCollection;
+    public List<Film> getFilmList() {
+        return filmList;
     }
 
-    public void setFilmCollection(Collection<Film> filmCollection) {
-        this.filmCollection = filmCollection;
+    public void setFilmList(List<Film> filmList) {
+        this.filmList = filmList;
     }
 
     @XmlTransient
-    public Collection<Film> getFilmCollection1() {
-        return filmCollection1;
+    public List<Film> getFilmListOriginal() {
+        return filmListOriginal;
     }
 
-    public void setFilmCollection1(Collection<Film> filmCollection1) {
-        this.filmCollection1 = filmCollection1;
+    public void setFilmListOriginal(List<Film> filmListOriginal) {
+        this.filmListOriginal = filmListOriginal;
     }
 
     @Override

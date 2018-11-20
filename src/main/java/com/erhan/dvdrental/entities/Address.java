@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,13 +87,13 @@ public class Address implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "city_id", referencedColumnName = "city_id")
     @ManyToOne(optional = false)
-    private City cityId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
-    private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
-    private Collection<Store> storeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
-    private Collection<Customer> customerCollection;
+    private City city;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
+    private List<Staff> staffList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
+    private List<Store> storeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
+    private List<Customer> customerList;
 
     public Address() {
     }
@@ -175,39 +175,39 @@ public class Address implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public City getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(City cityId) {
-        this.cityId = cityId;
-    }
-
-    @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
-    }
-
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @XmlTransient
-    public Collection<Store> getStoreCollection() {
-        return storeCollection;
+    public List<Staff> getStaffList() {
+        return staffList;
     }
 
-    public void setStoreCollection(Collection<Store> storeCollection) {
-        this.storeCollection = storeCollection;
+    public void setStaffList(List<Staff> staffList) {
+        this.staffList = staffList;
     }
 
     @XmlTransient
-    public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
+    public List<Store> getStoreList() {
+        return storeList;
     }
 
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
+    public void setStoreList(List<Store> storeList) {
+        this.storeList = storeList;
+    }
+
+    @XmlTransient
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
     }
 
     @Override

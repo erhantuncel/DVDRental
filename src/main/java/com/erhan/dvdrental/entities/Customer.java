@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -78,16 +78,16 @@ public class Customer implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Rental> rentalCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Payment> paymentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private List<Rental> rentalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private List<Payment> paymentList;
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @ManyToOne(optional = false)
-    private Address addressId;
+    private Address address;
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     @ManyToOne(optional = false)
-    private Store storeId;
+    private Store store;
 
     public Customer() {
     }
@@ -161,37 +161,41 @@ public class Customer implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Rental> getRentalCollection() {
-        return rentalCollection;
+    public List<Rental> getRentalList() {
+        return rentalList;
     }
 
-    public void setRentalCollection(Collection<Rental> rentalCollection) {
-        this.rentalCollection = rentalCollection;
+    public void setRentalList(List<Rental> rentalList) {
+        this.rentalList = rentalList;
     }
 
     @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
+    public List<Payment> getPaymentList() {
+        return paymentList;
     }
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
     }
 
-    public Address getAddressId() {
-        return addressId;
+    public void setPaymentCollection(List<Payment> paymentCollection) {
+        this.paymentList = paymentCollection;
     }
 
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public Store getStoreId() {
-        return storeId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public void setStoreId(Store storeId) {
-        this.storeId = storeId;
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     @Override

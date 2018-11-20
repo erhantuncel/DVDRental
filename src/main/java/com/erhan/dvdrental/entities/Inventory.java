@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,12 +53,12 @@ public class Inventory implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "film_id", referencedColumnName = "film_id")
     @ManyToOne(optional = false)
-    private Film filmId;
+    private Film film;
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     @ManyToOne(optional = false)
-    private Store storeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId")
-    private Collection<Rental> rentalCollection;
+    private Store store;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventory")
+    private List<Rental> rentalList;
 
     public Inventory() {
     }
@@ -88,31 +88,31 @@ public class Inventory implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Film getFilmId() {
-        return filmId;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setFilmId(Film filmId) {
-        this.filmId = filmId;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 
-    public Store getStoreId() {
-        return storeId;
+    public Store getStore() {
+        return store;
     }
 
-    public void setStoreId(Store storeId) {
-        this.storeId = storeId;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     @XmlTransient
-    public Collection<Rental> getRentalCollection() {
-        return rentalCollection;
+    public List<Rental> getRentalList() {
+        return rentalList;
     }
 
-    public void setRentalCollection(Collection<Rental> rentalCollection) {
-        this.rentalCollection = rentalCollection;
+    public void setRentalList(List<Rental> rentalList) {
+        this.rentalList = rentalList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -60,13 +60,13 @@ public class Payment implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     @ManyToOne(optional = false)
-    private Customer customerId;
+    private Customer customer;
     @JoinColumn(name = "rental_id", referencedColumnName = "rental_id")
     @ManyToOne
-    private Rental rentalId;
+    private Rental rental;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @ManyToOne(optional = false)
-    private Staff staffId;
+    private Staff staff;
 
     public Payment() {
     }
@@ -113,28 +113,28 @@ public class Payment implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Rental getRentalId() {
-        return rentalId;
+    public Rental getRental() {
+        return rental;
     }
 
-    public void setRentalId(Rental rentalId) {
-        this.rentalId = rentalId;
+    public void setRental(Rental rental) {
+        this.rental = rental;
     }
 
-    public Staff getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(Staff staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     @Override

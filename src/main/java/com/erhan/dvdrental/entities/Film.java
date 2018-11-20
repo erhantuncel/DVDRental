@@ -8,8 +8,8 @@ package com.erhan.dvdrental.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,8 +70,7 @@ public class Film implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "release_year")
-    @Temporal(TemporalType.DATE)
-    private Date releaseYear;
+    private Integer releaseYear;
     @Basic(optional = false)
     @NotNull
     @Column(name = "rental_duration")
@@ -100,25 +99,25 @@ public class Film implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "language_id", referencedColumnName = "language_id")
     @ManyToOne(optional = false)
-    private Language languageId;
+    private Language language;
     @JoinColumn(name = "original_language_id", referencedColumnName = "language_id")
     @ManyToOne
-    private Language originalLanguageId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "filmId")
-    private Collection<Inventory> inventoryCollection;
+    private Language originalLanguage;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "film")
+    private List<Inventory> inventoryList;
     
     // Instead of composite primary key added ManyToOne relation
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="film_category", 
                 joinColumns = {@JoinColumn(name="film_id")},
                 inverseJoinColumns = {@JoinColumn(name="category_id")})
-    private Collection<Category> categories = new ArrayList<>();
+    private List<Category> categoryList = new ArrayList<>();
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "film_actor",
                 joinColumns = {@JoinColumn(name = "film_id")},
                 inverseJoinColumns = {@JoinColumn(name = "actor_id")})
-    private Collection<Actor> actors = new ArrayList<>();
+    private List<Actor> actorList = new ArrayList<>();
 
     public Film() {
     }
@@ -160,11 +159,11 @@ public class Film implements Serializable {
         this.description = description;
     }
 
-    public Date getReleaseYear() {
+    public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(Date releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 
@@ -224,45 +223,47 @@ public class Film implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Language getLanguageId() {
-        return languageId;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setLanguageId(Language languageId) {
-        this.languageId = languageId;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
-    public Language getOriginalLanguageId() {
-        return originalLanguageId;
+    public Language getOriginalLanguage() {
+        return originalLanguage;
     }
 
-    public void setOriginalLanguageId(Language originalLanguageId) {
-        this.originalLanguageId = originalLanguageId;
+    public void setOriginalLanguage(Language originalLanguage) {
+        this.originalLanguage = originalLanguage;
     }
 
     @XmlTransient
-    public Collection<Inventory> getInventoryCollection() {
-        return inventoryCollection;
+    public List<Inventory> getInventoryList() {
+        return inventoryList;
     }
 
-    public void setInventoryCollection(Collection<Inventory> inventoryCollection) {
-        this.inventoryCollection = inventoryCollection;
+    public void setInventoryList(List<Inventory> inventoryList) {
+        this.inventoryList = inventoryList;
     }
 
-    public Collection<Category> getCategories() {
-        return categories;
+    @XmlTransient
+    public List<Category> getCategoryList() {
+        return categoryList;
     }
 
-    public void setCategories(Collection<Category> categories) {
-        this.categories = categories;
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
-    public Collection<Actor> getActors() {
-        return actors;
+    @XmlTransient
+    public List<Actor> getActorList() {
+        return actorList;
     }
 
-    public void setActors(Collection<Actor> actors) {
-        this.actors = actors;
+    public void setActorList(List<Actor> actorList) {
+        this.actorList = actorList;
     }
     
     @Override

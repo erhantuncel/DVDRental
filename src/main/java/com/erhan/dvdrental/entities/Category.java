@@ -7,8 +7,8 @@ package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,8 +58,8 @@ public class Category implements Serializable {
     private Date lastUpdate;
     
     // Instead of composite primary key added ManyToOne relation
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "categories")
-    private Collection<Film> films = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "categoryList")
+    private List<Film> filmList = new ArrayList<>();
     
 
     public Category() {
@@ -98,13 +98,13 @@ public class Category implements Serializable {
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-
-    public Collection<Film> getFilms() {
-        return films;
+    
+    public List<Film> getFilmList() {
+        return filmList;
     }
 
-    public void setFilms(Collection<Film> films) {
-        this.films = films;
+    public void setFilmList(List<Film> filmList) {
+        this.filmList = filmList;
     }
 
     @Override

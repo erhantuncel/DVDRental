@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,17 +53,17 @@ public class Store implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storeId")
-    private Collection<Staff> staffCollection;
+    private List<Staff> staffList;
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @ManyToOne(optional = false)
-    private Address addressId;
+    private Address address;
     @JoinColumn(name = "manager_staff_id", referencedColumnName = "staff_id")
     @OneToOne(optional = false)
-    private Staff managerStaffId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storeId")
-    private Collection<Inventory> inventoryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storeId")
-    private Collection<Customer> customerCollection;
+    private Staff managerStaff;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+    private List<Inventory> inventoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+    private List<Customer> customerList;
 
     public Store() {
     }
@@ -94,46 +94,46 @@ public class Store implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
+    public List<Staff> getStaffList() {
+        return staffList;
     }
 
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
+    public void setStaffList(List<Staff> staffList) {
+        this.staffList = staffList;
     }
 
-    public Address getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Staff getManagerStaffId() {
-        return managerStaffId;
+    public Staff getManagerStaff() {
+        return managerStaff;
     }
 
-    public void setManagerStaffId(Staff managerStaffId) {
-        this.managerStaffId = managerStaffId;
-    }
-
-    @XmlTransient
-    public Collection<Inventory> getInventoryCollection() {
-        return inventoryCollection;
-    }
-
-    public void setInventoryCollection(Collection<Inventory> inventoryCollection) {
-        this.inventoryCollection = inventoryCollection;
+    public void setManagerStaff(Staff managerStaff) {
+        this.managerStaff = managerStaff;
     }
 
     @XmlTransient
-    public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
+    public List<Inventory> getInventoryList() {
+        return inventoryList;
     }
 
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
+    public void setInventoryList(List<Inventory> inventoryList) {
+        this.inventoryList = inventoryList;
+    }
+
+    @XmlTransient
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
     }
 
     @Override

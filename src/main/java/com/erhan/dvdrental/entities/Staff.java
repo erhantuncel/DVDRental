@@ -6,8 +6,8 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -91,16 +91,16 @@ public class Staff implements Serializable {
     private Date lastUpdate;
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @ManyToOne(optional = false)
-    private Address addressId;
+    private Address address;
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     @ManyToOne(optional = false)
     private Store storeId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "managerStaffId")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "managerStaff")
     private Store store;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staffId")
-    private Collection<Rental> rentalCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staffId")
-    private Collection<Payment> paymentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
+    private List<Rental> rentalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
+    private List<Payment> paymentList;
 
     public Staff() {
     }
@@ -190,12 +190,12 @@ public class Staff implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Address getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Store getStoreId() {
@@ -215,21 +215,21 @@ public class Staff implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Rental> getRentalCollection() {
-        return rentalCollection;
+    public List<Rental> getRentalList() {
+        return rentalList;
     }
 
-    public void setRentalCollection(Collection<Rental> rentalCollection) {
-        this.rentalCollection = rentalCollection;
+    public void setRentalList(List<Rental> rentalList) {
+        this.rentalList = rentalList;
     }
 
     @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
+    public List<Payment> getPaymentList() {
+        return paymentList;
     }
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
     }
 
     @Override
