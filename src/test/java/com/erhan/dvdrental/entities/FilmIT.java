@@ -21,7 +21,6 @@ public class FilmIT {
     
     private EntityManager em;
     private EntityTransaction transaction;
-    private Film film;
     
     @BeforeClass
     public static void setUpClass() {
@@ -36,9 +35,16 @@ public class FilmIT {
     public void setUp() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("it");
         this.em = emf.createEntityManager();
-        this.transaction = this.em.getTransaction();
-        
-        this.film= new Film();
+        this.transaction = this.em.getTransaction();   
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    @Test
+    public void testPersist() {
+        Film film= new Film();
         
         film.setTitle("Whiplash");
         film.setDescription("A promising young drummer enrolls at a cut-throat music conservatory "
@@ -58,14 +64,7 @@ public class FilmIT {
         Actor jkSimmons = new Actor("J.K.", "Simmons", new Date());
         film.getActorList().add(jkSimmons);
         film.getActorList().add(milesTeller);
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    @Test
-    public void testPersist() {
+        
         transaction.begin();
         em.persist(film);
         transaction.commit();
