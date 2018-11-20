@@ -29,7 +29,6 @@ public class ActorIT {
     
     private EntityManager em;
     private EntityTransaction transaction;
-    private Actor tomHanks;
     
     @BeforeClass
     public static void setUpClass() {
@@ -44,9 +43,6 @@ public class ActorIT {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("it");
         this.em = emf.createEntityManager();
         this.transaction = em.getTransaction();
-        
-        this.tomHanks = new Actor("Tom", "Hanks", new Date());
-        
     }
     
     @After
@@ -55,6 +51,8 @@ public class ActorIT {
 
     @Test
     public void testParse() {
+         Actor tomHanks = new Actor("Tom", "Hanks", new Date());
+        
         transaction.begin();
         em.persist(tomHanks);
         transaction.commit();
