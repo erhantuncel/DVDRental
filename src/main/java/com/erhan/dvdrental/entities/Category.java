@@ -69,8 +69,7 @@ public class Category implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public Category(Short categoryId, String name, Date lastUpdate) {
-        this.categoryId = categoryId;
+    public Category(String name, Date lastUpdate) {
         this.name = name;
         this.lastUpdate = lastUpdate;
     }
