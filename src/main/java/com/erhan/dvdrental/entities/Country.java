@@ -6,6 +6,7 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -56,8 +57,8 @@ public class Country implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "countryId")
-    private List<City> cityList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
+    private List<City> cityList = new ArrayList<>();
 
     public Country() {
     }
@@ -66,10 +67,18 @@ public class Country implements Serializable {
         this.countryId = countryId;
     }
 
-    public Country(Short countryId, String country, Date lastUpdate) {
-        this.countryId = countryId;
+    public Country(String country, Date lastUpdate) {
         this.country = country;
         this.lastUpdate = lastUpdate;
+    }
+    
+    public void addCity(City city) {
+        cityList.add(city);
+        city.setCountry(this);
+    }
+    
+    public void removeCity(City city) {
+        cityList.remove(city);
     }
 
     public Short getCountryId() {
