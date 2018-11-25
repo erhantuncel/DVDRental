@@ -6,6 +6,7 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -59,10 +60,10 @@ public class City implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
-    private List<Address> addressList;
+    private List<Address> addressList = new ArrayList<>();
     @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     @ManyToOne(optional = false)
-    private Country countryId;
+    private Country country;
 
     public City() {
     }
@@ -71,12 +72,16 @@ public class City implements Serializable {
         this.cityId = cityId;
     }
 
-    public City(Short cityId, String city, Date lastUpdate) {
-        this.cityId = cityId;
+    public City(String city, Date lastUpdate) {
         this.city = city;
         this.lastUpdate = lastUpdate;
     }
 
+    public void addAddress(Address address) {
+        addressList.add(address);
+        address.setCity(this);
+    }
+    
     public Short getCityId() {
         return cityId;
     }
@@ -110,12 +115,12 @@ public class City implements Serializable {
         this.addressList = addressList;
     }
 
-    public Country getCountryId() {
-        return countryId;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryId(Country countryId) {
-        this.countryId = countryId;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     @Override
