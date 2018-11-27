@@ -6,17 +6,18 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -77,23 +78,18 @@ public class Address implements Serializable {
     private String phone;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Column(name = "location")
-    private byte[] location;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
     @JoinColumn(name = "city_id", referencedColumnName = "city_id")
     @ManyToOne(optional = false)
     private City city;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
-    private List<Staff> staffList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
-    private List<Store> storeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
-    private List<Customer> customerList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address", fetch = FetchType.LAZY)
+    private List<Staff> staffList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address", fetch = FetchType.LAZY)
+    private List<Store> storeList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address", fetch = FetchType.LAZY)
+    private List<Customer> customerList = new ArrayList<>();
 
     public Address() {
     }
@@ -102,15 +98,28 @@ public class Address implements Serializable {
         this.addressId = addressId;
     }
 
-    public Address(Short addressId, String address, String district, String phone, byte[] location, Date lastUpdate) {
-        this.addressId = addressId;
+    public Address(String address, String district, String phone, Date lastUpdate) {
         this.address = address;
         this.district = district;
         this.phone = phone;
-        this.location = location;
         this.lastUpdate = lastUpdate;
     }
 
+    public void addStore(Store store) {
+        storeList.add(store);
+        store.setAddress(this);
+    }
+    
+    public void addStaff(Staff staff) {
+        staffList.add(staff);
+        staff.setAddress(this);
+    }
+    
+    public void addCustomer(Customer customer) {
+        customerList.add(customer);
+        customer.setAddress(this);
+    }
+    
     public Short getAddressId() {
         return addressId;
     }
@@ -157,14 +166,6 @@ public class Address implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public byte[] getLocation() {
-        return location;
-    }
-
-    public void setLocation(byte[] location) {
-        this.location = location;
     }
 
     public Date getLastUpdate() {
