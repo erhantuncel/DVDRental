@@ -6,12 +6,14 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,16 +54,16 @@ public class Store implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storeId")
-    private List<Staff> staffList;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "storeId", fetch = FetchType.LAZY)
+    private List<Staff> staffList = new ArrayList<>();
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @ManyToOne(optional = false)
     private Address address;
     @JoinColumn(name = "manager_staff_id", referencedColumnName = "staff_id")
     @OneToOne(optional = false)
     private Staff managerStaff;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-    private List<Inventory> inventoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store", fetch = FetchType.LAZY)
+    private List<Inventory> inventoryList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
     private List<Customer> customerList;
 
@@ -72,11 +74,20 @@ public class Store implements Serializable {
         this.storeId = storeId;
     }
 
-    public Store(Short storeId, Date lastUpdate) {
-        this.storeId = storeId;
+    public Store(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+    
+    public void addStaff(Staff staff) {
+        staffList.add(staff);
+        staff.setStoreId(this);
+    }
 
+    public void addInventory(Inventory inventory) {
+        inventoryList.add(inventory);
+        inventory.setStore(this);
+    }
+    
     public Short getStoreId() {
         return storeId;
     }
