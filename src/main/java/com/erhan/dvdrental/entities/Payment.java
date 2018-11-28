@@ -75,8 +75,7 @@ public class Payment implements Serializable {
         this.paymentId = paymentId;
     }
 
-    public Payment(Short paymentId, BigDecimal amount, Date paymentDate) {
-        this.paymentId = paymentId;
+    public Payment(BigDecimal amount, Date paymentDate) {
         this.amount = amount;
         this.paymentDate = paymentDate;
     }
