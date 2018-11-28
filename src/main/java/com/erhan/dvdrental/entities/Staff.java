@@ -96,7 +96,7 @@ public class Staff implements Serializable {
     @ManyToOne(optional = false)
     private Store storeId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "managerStaff")
-    private Store store;
+    private Store storeToManage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
     private List<Rental> rentalList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
@@ -109,8 +109,7 @@ public class Staff implements Serializable {
         this.staffId = staffId;
     }
 
-    public Staff(Short staffId, String firstName, String lastName, boolean active, String username, Date lastUpdate) {
-        this.staffId = staffId;
+    public Staff(String firstName, String lastName, boolean active, String username, Date lastUpdate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.active = active;
@@ -206,12 +205,12 @@ public class Staff implements Serializable {
         this.storeId = storeId;
     }
 
-    public Store getStore() {
-        return store;
+    public Store getStoreToManage() {
+        return storeToManage;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public void setStoreToManage(Store storeToManage) {
+        this.storeToManage = storeToManage;
     }
 
     @XmlTransient
