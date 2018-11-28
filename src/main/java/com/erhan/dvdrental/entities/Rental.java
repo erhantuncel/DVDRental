@@ -6,11 +6,13 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,8 +71,8 @@ public class Rental implements Serializable {
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @ManyToOne(optional = false)
     private Staff staff;
-    @OneToMany(mappedBy = "rental")
-    private List<Payment> paymentList;
+    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY)
+    private List<Payment> paymentList = new ArrayList<>();
 
     public Rental() {
     }
@@ -84,6 +86,11 @@ public class Rental implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public void addPayment(Payment payment) {
+        paymentList.add(payment);
+        payment.setRental(this);
+    }
+    
     public Integer getRentalId() {
         return rentalId;
     }

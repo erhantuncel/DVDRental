@@ -6,12 +6,14 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -97,10 +99,10 @@ public class Staff implements Serializable {
     private Store storeId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "managerStaff")
     private Store storeToManage;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
-    private List<Rental> rentalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
-    private List<Payment> paymentList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff", fetch = FetchType.LAZY)
+    private List<Rental> rentalList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff", fetch = FetchType.LAZY)
+    private List<Payment> paymentList = new ArrayList<>();
 
     public Staff() {
     }
@@ -117,6 +119,16 @@ public class Staff implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public void addRental(Rental rental) {
+        rentalList.add(rental);
+        rental.setStaff(this);
+    }
+    
+    public void addPayment(Payment payment) {
+        paymentList.add(payment);
+        payment.setStaff(this);
+    }
+    
     public Short getStaffId() {
         return staffId;
     }

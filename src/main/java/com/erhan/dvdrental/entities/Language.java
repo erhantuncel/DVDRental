@@ -6,12 +6,14 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,10 +58,10 @@ public class Language implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "language")
-    private List<Film> filmList;
-    @OneToMany(mappedBy = "originalLanguage")
-    private List<Film> filmListOriginal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "language", fetch = FetchType.LAZY)
+    private List<Film> filmList = new ArrayList<>();
+    @OneToMany(mappedBy = "originalLanguage", fetch = FetchType.LAZY)
+    private List<Film> filmListOriginal = new ArrayList<>();
 
     public Language() {
     }
@@ -73,6 +75,16 @@ public class Language implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public void addFilm(Film film) {
+        filmList.add(film);
+        film.setLanguage(this);
+    }
+    
+    public void addFilmToOriginalLanguage(Film film) {
+        filmListOriginal.add(film);
+        film.setOriginalLanguage(this);
+    }
+    
     public Short getLanguageId() {
         return languageId;
     }

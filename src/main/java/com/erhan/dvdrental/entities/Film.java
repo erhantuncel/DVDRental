@@ -14,6 +14,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -103,8 +104,8 @@ public class Film implements Serializable {
     @JoinColumn(name = "original_language_id", referencedColumnName = "language_id")
     @ManyToOne
     private Language originalLanguage;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "film")
-    private List<Inventory> inventoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "film", fetch = FetchType.LAZY)
+    private List<Inventory> inventoryList = new ArrayList<>();
     
     // Instead of composite primary key added ManyToOne relation
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -126,8 +127,7 @@ public class Film implements Serializable {
         this.filmId = filmId;
     }
 
-    public Film(Short filmId, String title, short rentalDuration, BigDecimal rentalRate, BigDecimal replacementCost, Date lastUpdate) {
-        this.filmId = filmId;
+    public Film(String title, short rentalDuration, BigDecimal rentalRate, BigDecimal replacementCost, Date lastUpdate) {
         this.title = title;
         this.rentalDuration = rentalDuration;
         this.rentalRate = rentalRate;
@@ -135,6 +135,11 @@ public class Film implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public void addInventory(Inventory inventory) {
+        inventoryList.add(inventory);
+        inventory.setFilm(this);
+    }
+    
     public Short getFilmId() {
         return filmId;
     }

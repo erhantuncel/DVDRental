@@ -64,8 +64,8 @@ public class Store implements Serializable {
     private Staff managerStaff;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "store", fetch = FetchType.LAZY)
     private List<Inventory> inventoryList = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-    private List<Customer> customerList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store", fetch = FetchType.LAZY)
+    private List<Customer> customerList = new ArrayList<>();
 
     public Store() {
     }
@@ -86,6 +86,11 @@ public class Store implements Serializable {
     public void addInventory(Inventory inventory) {
         inventoryList.add(inventory);
         inventory.setStore(this);
+    }
+    
+    public void addCustomer(Customer customer) {
+        customerList.add(customer);
+        customer.setStore(this);
     }
     
     public Short getStoreId() {
