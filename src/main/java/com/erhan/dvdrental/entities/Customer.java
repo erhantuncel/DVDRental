@@ -96,8 +96,7 @@ public class Customer implements Serializable {
         this.customerId = customerId;
     }
 
-    public Customer(Short customerId, String firstName, String lastName, boolean active, Date createDate) {
-        this.customerId = customerId;
+    public Customer(String firstName, String lastName, boolean active, Date createDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.active = active;
