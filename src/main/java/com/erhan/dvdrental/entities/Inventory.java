@@ -6,12 +6,14 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,8 +59,8 @@ public class Inventory implements Serializable {
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     @ManyToOne(optional = false)
     private Store store;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventory")
-    private List<Rental> rentalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventory", fetch = FetchType.LAZY)
+    private List<Rental> rentalList = new ArrayList<>();
 
     public Inventory() {
     }
@@ -67,9 +69,13 @@ public class Inventory implements Serializable {
         this.inventoryId = inventoryId;
     }
 
-    public Inventory(Integer inventoryId, Date lastUpdate) {
-        this.inventoryId = inventoryId;
+    public Inventory(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+    
+    public void addRental(Rental rental) {
+        rentalList.add(rental);
+        rental.setInventory(this);
     }
 
     public Integer getInventoryId() {
