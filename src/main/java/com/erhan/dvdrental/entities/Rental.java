@@ -79,8 +79,7 @@ public class Rental implements Serializable {
         this.rentalId = rentalId;
     }
 
-    public Rental(Integer rentalId, Date rentalDate, Date lastUpdate) {
-        this.rentalId = rentalId;
+    public Rental(Date rentalDate, Date lastUpdate) {
         this.rentalDate = rentalDate;
         this.lastUpdate = lastUpdate;
     }
