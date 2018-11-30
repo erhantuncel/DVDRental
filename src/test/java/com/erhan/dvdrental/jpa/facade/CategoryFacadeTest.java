@@ -8,6 +8,7 @@ package com.erhan.dvdrental.jpa.facade;
 import com.erhan.dvdrental.entities.Category;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -46,5 +47,6 @@ public class CategoryFacadeTest {
         when(this.em.createNamedQuery(Category.FIND_BY_NAME)).thenReturn(mockedQuery);
         categoryList = this.categoryFacade.findByName(NAME);
         assertThat(categoryList, is(not(nullValue())));
+        LOG.log(Level.SEVERE, "CategoryFacadeTest-testFindByName passed.");
     }
 }
