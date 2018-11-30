@@ -30,6 +30,8 @@ public class AddressFacadeTest {
 
     private static final Logger LOG = Logger.getLogger(AddressFacadeTest.class.getName());
     
+    private static final String PHONE = "09873646644";
+    
     @InjectMocks
     AddressFacade addressFacade;
     
@@ -43,7 +45,7 @@ public class AddressFacadeTest {
         when(mockedQuery.getResultList()).thenReturn(addressList);
         when(mockedQuery.setParameter(anyString(), any())).thenReturn(mockedQuery);
         when(this.addressFacade.getEntityManager().createNamedQuery(Address.FIND_BY_PHONE)).thenReturn(mockedQuery);
-        addressList = this.addressFacade.findByPhone(Address.FIND_BY_PHONE);
+        addressList = this.addressFacade.findByPhone(PHONE);
         assertThat(addressList, is(not(nullValue())));
         LOG.log(Level.SEVERE, "AddressFacadeTest-testFindByPhone passed.");
     }
