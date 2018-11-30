@@ -49,6 +49,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_FIRST_NAME = "Customer.findByFirstName";
+    public static final String FIND_BY_LAST_NAME = "Customer.findByLastName";
+    public static final String FIND_BY_EMAIL = "Customer.findByEmail";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
