@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Actor.findByLastUpdate", query = "SELECT a FROM Actor a WHERE a.lastUpdate = :lastUpdate")})
 public class Actor implements Serializable {
 
+    public static final String FIND_BY_FIRST_NAME = "Actor.findByFirstName";
+    public static final String FIND_BY_LAST_NAME = "Actor.findByLastName";
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
