@@ -49,6 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_PHONE = "Address.findByPhone";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
