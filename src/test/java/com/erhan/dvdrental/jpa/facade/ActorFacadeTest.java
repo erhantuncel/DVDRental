@@ -45,8 +45,7 @@ public class ActorFacadeTest {
         Query mockedQuery = mock(Query.class);
         when(mockedQuery.getResultList()).thenReturn(actors);
         when(mockedQuery.setParameter(anyString(), any())).thenReturn(mockedQuery);
-//        when(this.actorFacade.em.createNamedQuery(Actor.FIND_BY_FIRST_NAME)).thenReturn(mockedQuery);
-        when(this.actorFacade.getEntityManager().createNamedQuery(Actor.FIND_BY_FIRST_NAME)).thenReturn(mockedQuery);
+        when(this.em.createNamedQuery(Actor.FIND_BY_FIRST_NAME)).thenReturn(mockedQuery);
         actors = this.actorFacade.findByFirstName(FIRST_NAME);
         assertThat(actors, is(not(nullValue())));
         LOG.log(Level.SEVERE, "ActorFacadeTest-testFindByFirstName passed.");
@@ -58,7 +57,7 @@ public class ActorFacadeTest {
         Query mockedQuery = mock(Query.class);
         when(mockedQuery.getResultList()).thenReturn(actors);
         when(mockedQuery.setParameter(anyString(), any())).thenReturn(mockedQuery);
-        when(this.actorFacade.getEntityManager().createNamedQuery(Actor.FIND_BY_LAST_NAME)).thenReturn(mockedQuery);
+        when(this.em.createNamedQuery(Actor.FIND_BY_LAST_NAME)).thenReturn(mockedQuery);
         actors = this.actorFacade.findByLastName(LAST_NAME);
         assertThat(actors, is(not(nullValue())));
         LOG.log(Level.SEVERE, "ActorFacadeTest-testFindByLastName passed.");

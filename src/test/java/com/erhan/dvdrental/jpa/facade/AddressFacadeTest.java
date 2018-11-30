@@ -44,7 +44,7 @@ public class AddressFacadeTest {
         Query mockedQuery = mock(Query.class);
         when(mockedQuery.getResultList()).thenReturn(addressList);
         when(mockedQuery.setParameter(anyString(), any())).thenReturn(mockedQuery);
-        when(this.addressFacade.getEntityManager().createNamedQuery(Address.FIND_BY_PHONE)).thenReturn(mockedQuery);
+        when(this.em.createNamedQuery(Address.FIND_BY_PHONE)).thenReturn(mockedQuery);
         addressList = this.addressFacade.findByPhone(PHONE);
         assertThat(addressList, is(not(nullValue())));
         LOG.log(Level.SEVERE, "AddressFacadeTest-testFindByPhone passed.");
