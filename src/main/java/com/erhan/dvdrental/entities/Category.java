@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_NAME = "Category.findByName";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)

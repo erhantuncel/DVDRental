@@ -1,6 +1,7 @@
 package com.erhan.dvdrental.jpa.facade;
 
 import com.erhan.dvdrental.entities.Category;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,5 +19,10 @@ public class CategoryFacade  extends AbstractFacade<Category> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    public List<Category> findByName(String name) {
+        return em.createNamedQuery(Category.FIND_BY_NAME)
+                .setParameter("name", name).getResultList();
     }
 }
