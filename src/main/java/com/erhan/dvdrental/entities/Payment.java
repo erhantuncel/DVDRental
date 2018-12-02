@@ -40,6 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_PAYMENT_DATE = "Payment.findByPaymentDate";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
