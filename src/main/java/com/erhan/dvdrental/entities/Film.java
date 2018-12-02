@@ -56,6 +56,14 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Film implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_TITLE = "Film.findByTitle";
+    public static final String FIND_BY_RELEASE_YEAR = "Film.findByReleaseYear";
+    public static final String FIND_BY_RENTAL_RATE = "Film.findByRentalRate";
+    public static final String FIND_BY_LENGTH = "Film.findByLength";
+    public static final String FIND_BY_RATING = "Film.findByRating";
+    public static final String FIND_BY_SPECIAL_FEATURES = "Film.findBySpecialFeatures";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
