@@ -44,6 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Rental implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_RENTAL_DATE = "Rental.findByRentalDate";
+    public static final String FIND_BY_RETURN_DATE = "Rental.findByReturnDate";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
