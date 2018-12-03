@@ -52,6 +52,12 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Staff implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_FIRST_NAME = "Staff.findByFirstName";
+    public static final String FIND_BY_LAST_NAME = "Staff.findByLastName";
+    public static final String FIND_BY_EMAIL = "Staff.findByEmail";
+    public static final String FIND_BY_USER_NAME = "Staff.findByUsername";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
