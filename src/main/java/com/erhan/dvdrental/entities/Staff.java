@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -110,6 +111,9 @@ public class Staff implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff", fetch = FetchType.LAZY)
     private List<Payment> paymentList = new ArrayList<>();
 
+    @Transient
+    private String userGroup = UserGroup.EMPLOYEE_GROUP;
+    
     public Staff() {
     }
 
@@ -248,7 +252,15 @@ public class Staff implements Serializable {
     public void setPaymentList(List<Payment> paymentList) {
         this.paymentList = paymentList;
     }
+    
+    public String getUserGroup() {
+        return userGroup;
+    }
 
+    public void setUserGroup(String userGroup) {
+        this.userGroup = userGroup;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

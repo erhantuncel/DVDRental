@@ -19,11 +19,4 @@ public class UserGroupFacade extends AbstractFacade<UserGroup> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
-    @Override
-    public void create(UserGroup entity) {
-        
-    }
-    
-    
 }

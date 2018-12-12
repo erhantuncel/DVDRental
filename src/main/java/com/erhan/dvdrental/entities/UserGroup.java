@@ -13,6 +13,9 @@ public class UserGroup implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
+    public static final String ADMINISTRATOR_GROUP = "Administrator";
+    public static final String EMPLOYEE_GROUP = "Employee";
+    
     @Id
     @Column(name = "username", nullable = false, length = 16)
     private String username;
