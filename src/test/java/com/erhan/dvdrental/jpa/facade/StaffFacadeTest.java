@@ -79,13 +79,13 @@ public class StaffFacadeTest {
 
     @Test
     public void testFindByUserName() {
-        List<Staff> staffList = new ArrayList<>();
+        Staff staff = new Staff();
         Query mockedQuery = mock(Query.class);
-        when(mockedQuery.getResultList()).thenReturn(staffList);
+        when(mockedQuery.getSingleResult()).thenReturn(staff);
         when(mockedQuery.setParameter(anyString(), anyString())).thenReturn(mockedQuery);
         when(this.em.createNamedQuery(Staff.FIND_BY_USER_NAME)).thenReturn(mockedQuery);
-        staffList = this.staffFacade.findByUserName(USER_NAME);
-        assertThat(staffList, is(not(nullValue())));
+        staff = this.staffFacade.findByUserName(USER_NAME);
+        assertThat(staff, is(not(nullValue())));
         LOG.log(Level.SEVERE, "StaffFacadeTest-testFindByEmail passed");
     }  
 }

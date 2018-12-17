@@ -54,8 +54,8 @@ public class StaffFacade extends AbstractFacade<Staff> {
                 .setParameter("email", email).getResultList();
     }
     
-    public List<Staff> findByUserName(String userName) {
-        return em.createNamedQuery(Staff.FIND_BY_USER_NAME)
-                .setParameter("username", userName).getResultList();
+    public Staff findByUserName(String userName) {
+        return (Staff) em.createNamedQuery(Staff.FIND_BY_USER_NAME)
+                .setParameter("username", userName).getSingleResult();
     }
 }
