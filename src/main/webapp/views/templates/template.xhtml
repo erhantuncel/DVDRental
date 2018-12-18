@@ -25,17 +25,20 @@
                         <h:panelGrid columns="1" styleClass="topMenu">
                             <p:toolbar>
                                 <p:toolbarGroup align="left">
-                                    <p:commandButton type="button" value="Personel" icon="fa fa-user" />
+                                    <p:commandButton type="button" value="Personel" icon="fa fa-user"
+                                                     rendered="#{sessionScope.userRole eq 'Administrator'}"/>
                                     <p:commandButton type="button" value="Şube" icon="fa fa-gears" />
                                     <p:commandButton type="button" value="Müşteri" icon="fa fa-users" />
                                     <p:commandButton type="button" value="DVD" icon="fa fa-video-camera" />
-                                    <p:commandButton type="button" value="Rapor" icon="fa fa-credit-card" />
+                                    <p:commandButton type="button" value="Rapor" icon="fa fa-credit-card"
+                                                     rendered="#{sessionScope.userRole eq 'Administrator'}"/>
 <!--                                    <p:commandButton type="button" value="Ödeme" icon="fa fa-area-chart" />-->
                                 </p:toolbarGroup>
                                 <p:toolbarGroup align="right">
-                                    <p:commandLink value="Erhan TUNÇEL" />
+                                    <p:commandLink value="#{sessionScope.Staff.firstName}&nbsp;#{sessionScope.Staff.lastName}" />
                                     &nbsp;
-                                    <p:commandButton type="button" value="Çıkış" icon="fa fa-sign-out" />
+                                    <p:commandButton value="Çıkış" icon="fa fa-sign-out" 
+                                                     action="#{loginController.logout()}"/>
                                 </p:toolbarGroup>
                             </p:toolbar>
                         </h:panelGrid>
