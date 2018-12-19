@@ -35,9 +35,23 @@
             <form-error-page>/login.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-    
+
     <security-constraint>
         <display-name>Restricted to Administrators</display-name>
+        <web-resource-collection>
+            <web-resource-name>Restricted Access</web-resource-name>
+            <url-pattern>/views/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+       
+    <security-constraint>
+        <display-name>Restricted to Administrators and Employees</display-name>
         <web-resource-collection>
             <web-resource-name>Restricted Access</web-resource-name>
             <url-pattern>/views/*</url-pattern>
