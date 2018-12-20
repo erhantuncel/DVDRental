@@ -20,11 +20,12 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <center><h1>MySQL SAKILA ÖRNEK VERİTABANI YÖNETİMİ - DVD RENTAL</h1></center><br/><br/><br/><br/>
-                        <p:fieldset>
+                        <p:fieldset id="fieldSet">
                             <div class="ui-g">
                                 <div class="ui-g-1">
                                 </div>
                                 <div class="ui-g-10">
+                                    <p:messages id="msgs" />
                                     <h:panelGrid columns="2" style="margin: 10px;">
                                         <p:outputLabel value="Personel Kullancı Adı :" for="userName"/>
                                         <p:inputText id="userName" value="#{loginController.username}" 
@@ -37,7 +38,8 @@
                                                     requiredMessage="Şifre boş olamaz!"/>
 
                                         <p:outputLabel value="" />
-                                        <p:commandButton value=" PERSONEL GİRİŞ" action="#{loginController.login()}"/>
+                                        <p:commandButton value=" PERSONEL GİRİŞ" update="fieldSet"
+                                                         action="#{loginController.login()}"/>
                                     </h:panelGrid>
                                 </div>
                                 <div class="ui-g-1">
