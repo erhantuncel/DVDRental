@@ -9,7 +9,7 @@
     <ui:composition>
         <p:dialog id="PersonelViewDialog" widgetVar="PersonelViewDialog" appendTo="@(body)" 
                   modal="true" resizable="false" header="Personel Bilgileri"
-                  height="200" width="500">
+                  height="170" width="500">
             <h:form id="PersonelViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid rendered="#{personelController.selected != null}"
@@ -60,7 +60,6 @@
                             </p:column>
                         </p:row>
                     </p:panelGrid>
-                    <p:commandButton value="Bilgilerimi Güncelle" style="float: right;"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>
