@@ -10,16 +10,16 @@ import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-@Named("personelController")
+@Named("staffController")
 @SessionScoped
-public class PersonelController implements Serializable {
+public class StaffController implements Serializable {
 
     @EJB
     private StaffFacade staffFacade;
     private Staff selected;
-    private StreamedContent personelPicture;
+    private StreamedContent staffPicture;
     
-    public PersonelController() {
+    public StaffController() {
     }
 
     public StaffFacade getStaffFacade() {
@@ -34,7 +34,7 @@ public class PersonelController implements Serializable {
         this.selected = selected;
     }
 
-    public StreamedContent getPersonelPicture() {
+    public StreamedContent getStaffPicture() {
         DefaultStreamedContent image = null;
         if(selected.getPicture() != null) {
             image = new DefaultStreamedContent(new ByteArrayInputStream(selected.getPicture()), "image/png");

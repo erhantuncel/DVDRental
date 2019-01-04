@@ -36,8 +36,8 @@
                                 </p:toolbarGroup>
                                 <p:toolbarGroup align="right">
                                     <p:commandLink value="#{sessionScope.Staff.firstName}&nbsp;#{sessionScope.Staff.lastName}"
-                                                   actionListener="#{personelController.setSelected(sessionScope.Staff)}"
-                                                   update=":PersonelViewForm" oncomplete="PF('PersonelViewDialog').show()"/>
+                                                   actionListener="#{staffController.setSelected(sessionScope.Staff)}"
+                                                   update="StaffViewForm" oncomplete="PF('StaffViewDialog').show()"/>
                                     &nbsp;
                                     <p:commandButton value="Çıkış" icon="fa fa-sign-out" 
                                                      action="#{loginController.logout()}"/>
@@ -52,7 +52,7 @@
             </h:form>
             <h:outputStylesheet library="css" name="layout.css"/>
             <ui:insert name="appResource" />
-            <ui:include src="../personel/view.xhtml" />
+            <ui:include src="../staffView.xhtml" />
         </h:body>
     </f:view>
 </html>

@@ -7,19 +7,19 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     
     <ui:composition>
-        <p:dialog id="PersonelViewDialog" widgetVar="PersonelViewDialog" appendTo="@(body)" 
+        <p:dialog id="StaffViewDialog" widgetVar="StaffViewDialog" appendTo="@(body)" 
                   modal="true" resizable="false" header="Personel Bilgileri"
                   height="170" width="500">
-            <h:form id="PersonelViewForm">
+            <h:form id="StaffViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid rendered="#{personelController.selected != null}"
+                    <p:panelGrid rendered="#{staffController.selected != null}"
                                  styleClass="ui-noborder">
                         <p:row>
                             <p:column>
-                                <p:graphicImage value="#{personelController.personelPicture}"
+                                <p:graphicImage value="#{staffController.staffPicture}"
                                                 width="150" height="150"
-                                                rendered="#{not empty personelController.personelPicture}"/>
-                                <h:panelGrid columns="1" rendered="#{empty personelController.personelPicture}"
+                                                rendered="#{not empty staffController.staffPicture}"/>
+                                <h:panelGrid columns="1" rendered="#{empty staffController.staffPicture}"
                                              style="background-color: #cecece; 
                                              height: 150px; width: 150px; text-align: center;">
                                     <h:outputText value="Fotoğraf Eklenmemiş"
@@ -30,28 +30,28 @@
                                 <p:panelGrid>
                                     <p:row>
                                         <p:column style="font-weight: bold;">Personel No:</p:column>
-                                        <p:column>#{personelController.selected.staffId}</p:column>
+                                        <p:column>#{staffController.selected.staffId}</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="font-weight: bold;">Ad:</p:column>
-                                        <p:column>#{personelController.selected.firstName}</p:column>
+                                        <p:column>#{staffController.selected.firstName}</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="font-weight: bold;">Soyad:</p:column>
-                                        <p:column>#{personelController.selected.lastName}</p:column>
+                                        <p:column>#{staffController.selected.lastName}</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="font-weight: bold;">E-mail:</p:column>
-                                        <p:column>#{personelController.selected.email}</p:column>
+                                        <p:column>#{staffController.selected.email}</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="font-weight: bold;">Kullanıcı Adı:</p:column>
-                                        <p:column>#{personelController.selected.username}</p:column>
+                                        <p:column>#{staffController.selected.username}</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="font-weight: bold;">Son Güncelleme:</p:column>
                                         <p:column>
-                                            <h:outputText value="#{personelController.selected.lastUpdate}">
+                                            <h:outputText value="#{staffController.selected.lastUpdate}">
                                                 <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
                                             </h:outputText>
                                         </p:column>
