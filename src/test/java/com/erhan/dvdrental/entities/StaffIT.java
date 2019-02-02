@@ -96,4 +96,26 @@ public class StaffIT {
         logger.log(Level.SEVERE, "StaffIT-testMerge passed.");
     }
     
+    @Test
+    public void testMergeWithAddressChange() {
+        transaction.begin();
+        Staff foundStaffId2 = em.find(Staff.class, Short.valueOf("2"));
+        logger.log(Level.SEVERE, "Before City = {0}", foundStaffId2.getAddress().getCity().getCity());
+        logger.log(Level.SEVERE, "Before Country = {0}", foundStaffId2.getAddress().getCity().getCountry().getCountry());
+        Country country20 = em.find(Country.class, Short.valueOf("20"));
+        
+        foundStaffId2.getAddress().setCity(country20.getCityList().get(1));
+        em.merge(foundStaffId2);
+        transaction.commit();
+        
+        transaction.begin();
+        Staff foundStaffId2Updated = em.find(Staff.class, Short.valueOf("2"));
+        logger.log(Level.SEVERE, "After City = {0}", foundStaffId2Updated.getAddress().getCity().getCity());
+        logger.log(Level.SEVERE, "After Country = {0}", foundStaffId2Updated.getAddress().getCity().getCountry().getCountry());
+        assertEquals(foundStaffId2Updated.getAddress().getCity().getCity(), country20.getCityList().get(1).getCity());
+        assertEquals(foundStaffId2Updated.getAddress().getCity().getCountry().getCountry(), country20.getCountry());
+        transaction.commit();
+        logger.log(Level.SEVERE, "StaffIT-testMerge passed.");
+    }
+    
 }
