@@ -16,14 +16,14 @@
                                  styleClass="ui-noborder">
                         <p:row>
                             <p:column>
-                                <p:graphicImage value="#{staffController.getStaffPicture(sessionScope.Staff)}"
+                                <p:graphicImage value="#{staffController.getStaffPictureAsStreamedContent(sessionScope.Staff.picture)}"
                                                 width="150" height="150"
-                                                rendered="#{not empty staffController.getStaffPicture(sessionScope.Staff)}"/>
+                                                rendered="#{not empty staffController.getStaffPictureAsStreamedContent(sessionScope.Staff.picture)}"/>
                                 <h:panelGrid columns="1" 
-                                             rendered="#{empty staffController.getStaffPicture(sessionScope.Staff)}"
+                                             rendered="#{empty staffController.getStaffPictureAsStreamedContent(sessionScope.Staff.picture)}"
                                              style="background-color: #cecece; 
                                              height: 150px; width: 150px; text-align: center;">
-                                    <h:outputText value="Fotoğraf Eklenmemiş"
+                                    <h:outputText value="Resim Eklenmemiş"
                                                   style="font-weight: bold; font-size: medium;"/>
                                 </h:panelGrid>
                             </p:column>
