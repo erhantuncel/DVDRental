@@ -41,8 +41,9 @@
                                     <p:commandLink value="#{sessionScope.Staff.firstName}&nbsp;#{sessionScope.Staff.lastName}"
                                                    update="StaffViewForm" oncomplete="PF('StaffViewDialog').show()"/>
                                     &nbsp;
-                                    <p:commandButton value="Çıkış" icon="fa fa-sign-out" 
+                                    <p:commandButton value="Çıkış" icon="fa fa-sign-out" immediate="true"
                                                      action="#{loginController.logout()}"/>
+                                    
                                 </p:toolbarGroup>
                             </p:toolbar>
                         </h:panelGrid>
