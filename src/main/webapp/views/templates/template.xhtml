@@ -19,9 +19,9 @@
             <ui:insert name="header" />
         </h:head>
         <h:body>
-            <h:form id="mainForm">
-                <div class="ui-g">
-                    <div id="menu" class="ui-g-12">
+            <div class="ui-g">
+                <div id="menu" class="ui-g-12">
+                    <h:form id="toolbarForm">
                         <h:panelGrid columns="1" styleClass="topMenu">
                             <p:toolbar>
                                 <p:toolbarGroup align="left">
@@ -35,7 +35,7 @@
                                     <p:button value="Rapor" icon="fa fa-credit-card"
                                               rendered="#{sessionScope.userRole eq 'Administrator'}"
                                               outcome="/views/admin/reports"/>
-<!--                                    <p:commandButton type="button" value="Ödeme" icon="fa fa-area-chart" />-->
+                                    <!--                                    <p:commandButton type="button" value="Ödeme" icon="fa fa-area-chart" />-->
                                 </p:toolbarGroup>
                                 <p:toolbarGroup align="right">
                                     <p:commandLink value="#{sessionScope.Staff.firstName}&nbsp;#{sessionScope.Staff.lastName}"
@@ -43,16 +43,18 @@
                                     &nbsp;
                                     <p:commandButton value="Çıkış" icon="fa fa-sign-out" immediate="true"
                                                      action="#{loginController.logout()}"/>
-                                    
+
                                 </p:toolbarGroup>
                             </p:toolbar>
-                        </h:panelGrid>
-                    </div>
-                    <div id="mainContent" class="ui-g-12">
-                        <ui:insert name="mainContent" />
-                    </div>
+                        </h:panelGrid>           
+                    </h:form>
                 </div>
-            </h:form>
+                <div id="mainContent" class="ui-g-12">
+                    <h:form id="mainForm">
+                        <ui:insert name="mainContent" />
+                    </h:form>
+                </div>
+            </div>
             <h:outputStylesheet library="css" name="layout.css"/>
             <ui:insert name="appResource" />
             <ui:include src="../staffView.xhtml" />
