@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Şubeler</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panelGrid id="storesTablePanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                <p:row>
+                    <p:column>
+                        <p:dataTable id="storeList" value="#{storeController.storeList}" var="store">
+                            <p:column headerText="Şube No" style="width: 10%; text-align: center;">
+                                <h:outputText value="#{store.storeId}" />
+                            </p:column>
+                            <p:column headerText="Adres" style="width: 40%;">
+                                <h:outputText value="#{store.address.address}" />
+                            </p:column>
+                            <p:column headerText="Şehir">
+                                <h:outputText value="#{store.address.city.city}" />
+                            </p:column>
+                            <p:column headerText="Ülke">
+                                <h:outputText value="#{store.address.city.country.country}" />
+                            </p:column>
+                            <p:column style="width: 10%; text-align: center;">
+                                <p:commandButton icon="fa fa-check" actionListener="#{createStaffBacking.selectStoreFromDialog(store)}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        <h:outputStylesheet library="css" name="layout.css"/>
+    </h:body>
+</html>
+

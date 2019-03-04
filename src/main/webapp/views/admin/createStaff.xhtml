@@ -1,0 +1,236 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/template.xhtml">
+
+    <ui:define name="title">
+        Personel Kayıt
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form id="createStaffForm">
+
+            <div class="ui-g-12 nospace">
+                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                    Personel Kayıt
+                </div>
+                <div class="ui-g-10 nospace">
+
+                </div>
+            </div>
+            <div class="ui-g-12 nospace" >
+                <p:panelGrid id="createStaffPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row>
+                        <p:column style="width: 30%;">
+                            <p:panelGrid style="width: 100%;">
+                                <p:row>
+                                    <p:column style="font-weight: bold; width: 35%;">
+                                        <p:outputLabel value="Ad:" for="firstName" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="firstName" value="#{createStaffBacking.firstName}"
+                                                     required="true"
+                                                     requiredMessage="Ad boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Soyad:" for="lastName" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="lastName" value="#{createStaffBacking.lastName}"
+                                                     required="true"
+                                                     requiredMessage="Soyad boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Email:" for="email" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="email" value="#{createStaffBacking.email}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>                                               
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Adres 1:" for="address1" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="address1" value="#{createStaffBacking.address1}"
+                                                     required="true"
+                                                     requiredMessage="Addres 1 boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Adres 2:" for="address2" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="address2" value="#{createStaffBacking.address2}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Ülke:" for="country" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="country" value="#{createStaffBacking.country}"
+                                                         valueChangeListener="#{createStaffBacking.countrySelectOneMenuValueChanged}"
+                                                         autoWidth="false" style="width: 137px;" 
+                                                         converter="countryConverter"
+                                                         required="true" 
+                                                         requiredMessage="Ülke seçmelisiniz!">
+                                            <p:ajax update="city" />
+                                            <f:selectItem itemLabel="Ülke Seçiniz" itemValue="" />
+                                            <f:selectItems value="#{countryController.countryList}" var="countryItem"
+                                                           itemValue="#{countryItem}" itemLabel="#{countryItem.country}"/>
+                                            <!--                                            <p:ajax event="change" update="@this" />-->
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="İl:" for="city" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="city" value="#{createStaffBacking.city}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="cityConverter"
+                                                         required="true"
+                                                         requiredMessage="İl seçmelisiniz!">
+                                            <f:selectItem itemLabel="İl seçiniz" itemValue="" />
+                                            <f:selectItems value="#{createStaffBacking.cityListBasedOnCountry}" var="cityItem"
+                                                           itemValue="#{cityItem}" itemLabel="#{cityItem.city}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="İlçe:" for="district" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="district" value="#{createStaffBacking.district}"
+                                                     required="true"
+                                                     requiredMessage="İlçe boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Posta Kodu:" for='postalCode' />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="postalCode" value="#{createStaffBacking.postalCode}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Telefon:" for="phone" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="phone" value="#{createStaffBacking.phone}"
+                                                     required="true"
+                                                     requiredMessage="Telefon boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Kullanıcı Adı:" for="username" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="username" value="#{createStaffBacking.userName}"
+                                                     required="true"
+                                                     requiredMessage="Kullanıcı boş olmamalı!" size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Şifre:" for="password1" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:password id="password1" value="#{createStaffBacking.password1}"
+                                                    required="true"
+                                                    requiredMessage="Şifre boş olmamalı!" size="25" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Şifre (Onay):" for="password2" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:password id="password2" value="#{createStaffBacking.password2}"
+                                                    required="true"
+                                                    requiredMessage="Şifre(Onay) boş olmamalı!" size="25" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Şube:" for="store" />
+                                    </p:column>
+                                    <p:column id="storeColumn">
+                                        <p:inputText id="store" value="#{createStaffBacking.store.address.address}
+                                                       &#8208;#{createStaffBacking.store.address.city.city}"
+                                                       required="true" readonly="true"
+                                                     requiredMessage="Şube boş olmamalı!" size="25"/>&#160;
+                                        <p:commandButton id="showStoresLink" icon="fa fa-search" immediate="true"
+                                                         actionListener="#{createStaffBacking.showSelectStoreDialog()}">
+                                            <p:ajax event="dialogReturn" listener="#{createStaffBacking.handleReturnStore}"
+                                                    update="store"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                        <p:column style="vertical-align: top; text-align: left;">
+                            <p:panelGrid id="createStaffImagePanelGrid" styleClass="nospace" style="width: 40%;">
+                                <p:row>
+                                    <p:column>
+                                        <p:graphicImage id="staffImage" width="150" height="150" stream="false"
+                                                        value="#{createStaffBacking.pictureAsStreamedContent}"
+                                                        rendered="#{createStaffBacking.picture ne null}">
+                                        </p:graphicImage>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:fileUpload style="border: 0.5px solid #979797;"
+                                                      mode="advanced" fileUploadListener="#{createStaffBacking.fileUploadListener}"
+                                          auto="false" label="Resim Seç" uploadLabel="Yükle" cancelLabel="İptal"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="65000"
+                                          invalidFileMessage="Resim .gif, .jpeg ya da .png formatinda olmalı."
+                                          invalidSizeMessage="Resim boyutu en fazla 65 kB olmalı."
+                                          update="mainForm:createStaffForm:createStaffImagePanelGrid"
+                                          />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:messages />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Kaydet" icon="fa fa-save" 
+                                             update="createStaffPanelGrid"
+                                             action="#{createStaffBacking.createStaff()}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+            <div class="ui-g-12 nospace">
+
+            </div>
+
+        </h:form>
+        <ui:include src="staffDetail.xhtml" />
+    </ui:define>
+
+</ui:composition>
+
