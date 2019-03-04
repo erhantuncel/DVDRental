@@ -29,25 +29,34 @@
                 </div>
             </div>
             <div class="ui-g-12" >
-                <p:dataTable id="staffList" value="#{staffListBacking.staffList}" var="staff"
-                             rowKey="#{staff.staffId}">
-                    <p:column headerText="Personel No">
+                <p:dataTable id="staffList" value="#{staffListBacking.staffList}" var="staff" widgetVar="staffsTable"
+                             rowKey="#{staff.staffId}"
+                             emptyMessage="Personel bulunamadı."
+                             paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <p:inputText id="globalFilter" onkeyup="PF('staffsTable').filter()" placeholder="Ara" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Personel No" filterBy="#{staff.staffId}" filterStyle="display:none;">
                         <h:outputText value="#{staff.staffId}" />
                     </p:column>
 
-                    <p:column headerText="Ad">
-                        <h:outputText value="#{staff.firstName}" />
+                    <p:column headerText="Ad" filterBy="#{staff.firstName}" filterStyle="display:none;">
+                        <h:outputText value="#{staff.firstName}"/>
                     </p:column>
 
-                    <p:column headerText="Soyad">
+                    <p:column headerText="Soyad" filterBy="#{staff.lastName}" filterStyle="display:none;">
                         <h:outputText value="#{staff.lastName}" />
                     </p:column>
 
-                    <p:column headerText="E-mail">
+                    <p:column headerText="E-mail" filterBy="#{staff.email}" filterStyle="display:none;">
                         <h:outputText value="#{staff.email}" />
                     </p:column>
 
-                    <p:column headerText="Kullanıcı Adı">
+                    <p:column headerText="Kullanıcı Adı" filterBy="#{staff.username}" filterStyle="display:none;">
                         <h:outputText value="#{staff.username}" />
                     </p:column>
 

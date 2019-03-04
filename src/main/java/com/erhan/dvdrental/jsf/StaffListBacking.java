@@ -13,8 +13,10 @@ import javax.inject.Named;
 public class StaffListBacking implements Serializable{
 
     @EJB
-    StaffFacade staffFacade;
-    List<Staff> staffList = null;
+    private StaffFacade staffFacade;
+    private List<Staff> staffList = null;
+    
+    private List<Staff> filteredStaffs;
 
     public StaffFacade getStaffFacade() {
         return staffFacade;
@@ -23,7 +25,7 @@ public class StaffListBacking implements Serializable{
     public void setStaffFacade(StaffFacade staffFacade) {
         this.staffFacade = staffFacade;
     }
-
+    
     public List<Staff> getStaffList() {
         if (staffList == null) {
             staffList = staffFacade.findAll();
@@ -33,6 +35,14 @@ public class StaffListBacking implements Serializable{
 
     public void setStaffList(List<Staff> staffList) {
         this.staffList = staffList;
+    }
+
+    public List<Staff> getFilteredStaffs() {
+        return filteredStaffs;
+    }
+
+    public void setFilteredStaffs(List<Staff> filteredStaffs) {
+        this.filteredStaffs = filteredStaffs;
     }
     
     
