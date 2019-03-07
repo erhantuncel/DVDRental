@@ -32,7 +32,7 @@
                 <p:dataTable id="staffList" value="#{staffListBacking.staffList}" var="staff" widgetVar="staffsTable"
                              rowKey="#{staff.staffId}"
                              emptyMessage="Personel bulunamadı."
-                             paginator="true" paginatorPosition="bottom"
+                             paginator="true" paginatorPosition="bottom" rows="10"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">

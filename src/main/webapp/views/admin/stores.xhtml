@@ -32,7 +32,7 @@
                 <p:dataTable id="storeList" value="#{storeListBacking.storeList}" var="store" widgetVar="storesTable"
                              rowKey="#{store.storeId}"
                              emptyMessage="Şube bulunamadı."
-                             paginator="true" paginatorPosition="bottom"
+                             paginator="true" paginatorPosition="bottom" rows="10"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
