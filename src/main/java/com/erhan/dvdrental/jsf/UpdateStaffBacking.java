@@ -22,7 +22,7 @@ import org.primefaces.model.UploadedFile;
 
 @Named("updateStaffBacking")
 @ViewScoped
-public class updateStaffBacking implements Serializable {
+public class UpdateStaffBacking implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

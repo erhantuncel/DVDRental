@@ -28,7 +28,7 @@ import org.primefaces.model.UploadedFile;
 
 @Named("createStaffBacking")
 @ViewScoped
-public class createStaffBacking implements Serializable {
+public class CreateStaffBacking implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -58,7 +58,7 @@ public class createStaffBacking implements Serializable {
     
     
     
-    public createStaffBacking() {
+    public CreateStaffBacking() {
     }
     
     public StaffFacade getStaffFacade() {
