@@ -57,7 +57,7 @@ public class Store implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "storeId", fetch = FetchType.LAZY)
     private List<Staff> staffList = new ArrayList<>();
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Address address;
     @JoinColumn(name = "manager_staff_id", referencedColumnName = "staff_id")
     @OneToOne(optional = false)

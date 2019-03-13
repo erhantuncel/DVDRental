@@ -71,8 +71,11 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center;">
-                        <p:commandButton icon="fa fa-refresh" 
+                        <p:commandButton icon="fa fa-refresh" update="mainForm:updateStoreForm"
+                                         oncomplete="PF('updateStoreDialog').show()"
                                          title="Şube Bilgi Güncelle">
+                            <f:setPropertyActionListener value="#{store}" target="${updateStoreBacking.selectedStore}" />
+                            <p:resetInput target="mainForm:updateStoreForm" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
@@ -82,6 +85,7 @@
             </div>
 
         </h:form>
+        <ui:include src="updateStore.xhtml" />
     </ui:define>
     
 </ui:composition>
