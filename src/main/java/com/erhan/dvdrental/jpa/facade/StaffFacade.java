@@ -39,6 +39,18 @@ public class StaffFacade extends AbstractFacade<Staff> {
         em.persist(userGroup);
     }
     
+    @Override
+    public void edit(Staff entity) {
+        UserGroup userGroup = em.find(UserGroup.class, entity.getUsername());
+        if(userGroup.equals(entity.getUserGroup())) {
+            em.merge(entity);
+        } else {
+            userGroup.setGroupname(entity.getUserGroup());
+            em.merge(userGroup);
+            em.merge(entity);
+        }
+    }
+    
     public List<Staff> findByFirstName(String firstName) {
         return em.createNamedQuery(Staff.FIND_BY_FIRST_NAME)
                 .setParameter("firstName", firstName).getResultList();

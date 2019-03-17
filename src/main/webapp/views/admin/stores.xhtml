@@ -77,6 +77,12 @@
                             <f:setPropertyActionListener value="#{store}" target="${updateStoreBacking.selectedStore}" />
                             <p:resetInput target="mainForm:updateStoreForm" />
                         </p:commandButton>
+                        <p:commandButton icon="fa fa-user-plus" update="mainForm:updateStoreManagerForm"
+                                         oncomplete="PF('updateStoreManagerDialog').show()"
+                                         actionListener="#{updateStoreBacking.loadStaffListForManage}"
+                                         title="Yetkili Güncelle">
+                            <f:attribute name="store" value="#{store}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
@@ -86,6 +92,7 @@
 
         </h:form>
         <ui:include src="updateStore.xhtml" />
+        <ui:include src="updateStoreManager.xhtml" />
     </ui:define>
     
 </ui:composition>

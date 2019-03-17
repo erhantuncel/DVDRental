@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        <p:dialog id="updateStoreManagerDialog" widgetVar="updateStoreManagerDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Şube Yetkilisi Güncelleme"
+                  width="650" height="320" closable="false">
+            <p:ajax event="close" listener="#{updateStoreBacking.hideUpdateStoreDialog()}" />
+            <h:form id="updateStoreManagerForm">
+                <p:panelGrid id="updateStoreManagerPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row>
+                        <p:column>
+                            <p:dataTable id="staffListNotManager" value="#{updateStoreBacking.staffListForManageStore}"
+                                         var="staff" rowKey="#{staff.staffId}" emptyMessage="Personel bulunamadı."
+                                         widgetVar="staffsNotManagerTable" paginator="true" paginatorPosition="bottom" rows="5" 
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         selectionMode="single" selection="#{updateStoreBacking.selectedManager}">
+                                <p:ajax event="rowSelect" update="mainForm:updateStoreManagerForm:changeManagerButton" />
+                                <p:ajax event="rowUnselect" update="mainForm:updateStoreManagerForm:changeManagerButton" />
+                                <f:facet name="header">
+                                    <p:outputPanel style="text-align: right;">
+                                        <p:inputText id="globalFilter" onkeyup="PF('staffsNotManagerTable').filter()" placeholder="Personel Ara" />
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="Ad" filterBy="#{staff.firstName}" filterStyle="display:none" style="width: 20%;">
+                                    <h:outputText value="#{staff.firstName}" />
+                                </p:column>
+                                <p:column headerText="Soyad" filterBy="#{staff.lastName}" filterStyle="display:none" style="width: 20%;">
+                                    <h:outputText value="#{staff.lastName}" />
+                                </p:column>
+                                <p:column headerText="E-mail">
+                                    <h:outputText value="#{staff.email}" />
+                                </p:column>
+                                <p:column headerText="Adres">
+                                    <h:outputText value="#{staff.storeId.address.address}&#160;#{staff.storeId.address.address2}
+                                                  &#160;#{staff.storeId.address.city.city}-#{staff.storeId.address.city.country.country}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
+                                             oncomplete="PF('updateStoreManagerDialog').hide();"/>
+                            <p:commandButton id="changeManagerButton" value="Değiştir" icon="fa fa-exchange" style="float: right;" 
+                                             update="@form" process="updateStoreManagerForm"
+                                             disabled="#{updateStoreBacking.selectedManager eq null}"
+                                             action="#{updateStoreBacking.updateManagerSelectedStore()}"
+                                             oncomplete="PF('updateStoreManagerDialog').hide()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+
+    
