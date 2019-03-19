@@ -7,6 +7,7 @@ import com.erhan.dvdrental.entities.Store;
 import com.erhan.dvdrental.entities.UserGroup;
 import com.erhan.dvdrental.jpa.facade.StaffFacade;
 import com.erhan.dvdrental.jpa.facade.StoreFacade;
+import com.erhan.dvdrental.jpa.facade.UserGroupFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class UpdateStoreBacking implements Serializable {
     @EJB
     private StaffFacade staffFacade;
     
+    @EJB
+    private UserGroupFacade userGroupFacade;
+    
     private List<City> cityListBasedOnCountry = new ArrayList<>();
     private List<Staff> staffListForManageStore = null;
     
@@ -51,6 +55,14 @@ public class UpdateStoreBacking implements Serializable {
 
     public void setStaffFacade(StaffFacade staffFacade) {
         this.staffFacade = staffFacade;
+    }
+
+    public UserGroupFacade getUserGroupFacade() {
+        return userGroupFacade;
+    }
+
+    public void setUserGroupFacade(UserGroupFacade userGroupFacade) {
+        this.userGroupFacade = userGroupFacade;
     }
 
     public List<City> getCityListBasedOnCountry() {
@@ -97,12 +109,12 @@ public class UpdateStoreBacking implements Serializable {
 
     public void loadStaffListForManage(ActionEvent event) {
         List<Staff> allStaffList = getStaffFacade().findAll();
-        String currentUserName = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         staffListForManageStore = new ArrayList<>();
         selectedStore = (Store) event.getComponent().getAttributes().get("store");
         for(Staff staff : allStaffList) {
-            if((!selectedStore.getManagerStaff().equals(staff)) && (!currentUserName.equalsIgnoreCase(staff.getUsername()))) {
-               staffListForManageStore.add(staff);
+            UserGroup staffUserGroup = userGroupFacade.find(staff.getUsername());
+            if(staffUserGroup.getGroupname().equals(UserGroup.EMPLOYEE_GROUP)) {
+                staffListForManageStore.add(staff);
             }
         }
     }
