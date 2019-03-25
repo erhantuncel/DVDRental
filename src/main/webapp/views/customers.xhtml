@@ -63,14 +63,18 @@
                                          title="Müşteri Bilgileri">
                             <f:setPropertyActionListener value="#{customer}" target="#{updateCustomerBacking.selectedCustomer}" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-refresh" 
+                        <p:commandButton icon="fa fa-refresh" update="mainForm:updateCustomerForm" 
+                                         oncomplete="PF('updateCustomerDialog').show()"
                                          title="Müşteri Bilgi Güncelle">
+                            <f:setPropertyActionListener value="#{customer}" target="#{updateCustomerBacking.selectedCustomer}" />
+                            <p:resetInput target="mainForm:updateCustomerForm" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
         </h:form>
         <ui:include src="customerDetail.xhtml" />
+        <ui:include src="updateCustomer.xhtml" />
     </ui:define>
 
 </ui:composition>

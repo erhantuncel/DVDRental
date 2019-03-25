@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        <p:dialog id="updateCustomerDialog" widgetVar="updateCustomerDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Müşteri Bilgileri Güncelleme"
+                  width="750" height="390" closable="false">
+            <p:ajax event="close" listener="#{updateCustomerBacking.hideUpdateCustomerDialog()}" />
+            <h:form id="updateCustomerForm">
+                <p:panelGrid id="updateCustomerPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row>
+                        <p:column>
+                            <p:panelGrid style="width: 100%;">
+                                <p:row>
+                                    <p:column style="font-weight: bold; width: 20%;">Personel No:</p:column>
+                                    <p:column style="width: 30%">#{updateCustomerBacking.selectedCustomer.customerId}</p:column>
+                                    <p:column style="width: 40%;" />
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Ad:" for="firstName" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="firstName" value="#{updateCustomerBacking.selectedCustomer.firstName}"
+                                                     required="true"
+                                                     requiredMessage="Ad boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="firstName" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Soyad:" for="lastName" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="lastName" value="#{updateCustomerBacking.selectedCustomer.lastName}"
+                                                     required="true"
+                                                     requiredMessage="Soyad boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="lastName" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Email:" for="email" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="email" value="#{updateCustomerBacking.selectedCustomer.email}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>                                               
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Adres 1:" for="address1" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="address1" value="#{updateCustomerBacking.selectedCustomer.address.address}"
+                                                     required="true"
+                                                     requiredMessage="Addres 1 boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="address1" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Adres 2:" for="address2" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="address2" value="#{updateCustomerBacking.selectedCustomer.address.address2}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Ülke:" for="country" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="country" value="#{updateCustomerBacking.selectedCustomer.address.city.country}"
+                                                         valueChangeListener="#{updateCustomerBacking.countrySelectOneMenuValueChanged}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="countryConverter"
+                                                         required="true" 
+                                                         requiredMessage="Ülke seçmelisiniz!">
+                                            <p:ajax update="city" />
+                                            <f:selectItem itemLabel="Ülke Seçiniz" itemValue="" />
+                                            <f:selectItems value="#{countryController.countryList}" var="countryItem"
+                                                           itemValue="#{countryItem}" itemLabel="#{countryItem.country}"/>
+<!--                                            <p:ajax event="change" update="@this" />-->
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="country" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="İl:" for="city" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="city" value="#{updateCustomerBacking.selectedCustomer.address.city}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="cityConverter"
+                                                         required="true"
+                                                         requiredMessage="İl seçmelisiniz!">
+                                            <f:selectItem itemLabel="İl seçiniz" itemValue="" />
+                                            <f:selectItems value="#{updateCustomerBacking.cityListBasedOnCountry}" var="cityItem"
+                                                           itemValue="#{cityItem}" itemLabel="#{cityItem.city}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="city" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="İlçe:" for="district" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="district" value="#{updateCustomerBacking.selectedCustomer.address.district}"
+                                                     required="true"
+                                                     requiredMessage="İlçe boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="district" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Posta Kodu:" for='postalCode' />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="postalCode" value="#{updateCustomerBacking.selectedCustomer.address.postalCode}"
+                                                     size="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Telefon:" for="phone" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="phone" value="#{updateCustomerBacking.selectedCustomer.address.phone}"
+                                                     required="true"
+                                                     requiredMessage="Telefon boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="phone" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
+                                             oncomplete="PF('updateCustomerDialog').hide();"/>
+                            <p:commandButton value="Güncelle" icon="fa fa-save" style="float: right;" 
+                                             update="@form, mainForm:customerListForm:customerList" process="updateCustomerForm"
+                                             action="#{updateCustomerBacking.updateCustomer()}"
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateCustomerDialog').hide()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+
+    
