@@ -9,7 +9,7 @@
     <ui:composition>
         <p:dialog id="updateCustomerDialog" widgetVar="updateCustomerDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Müşteri Bilgileri Güncelleme"
-                  width="750" height="390" closable="false">
+                  width="750" height="420" closable="false" dynamic="true">
             <p:ajax event="close" listener="#{updateCustomerBacking.hideUpdateCustomerDialog()}" />
             <h:form id="updateCustomerForm">
                 <p:panelGrid id="updateCustomerPanelGrid" styleClass="ui-noborder" style="width: 100%;">
@@ -23,12 +23,24 @@
                                 </p:row>
                                 <p:row>
                                     <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Kayıt Durumu" for="active"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputSwitch id="active" value="#{updateCustomerBacking.selectedCustomer.active}"
+                                                       onLabel="Açık" offLabel="Kapalı">
+                                            <p:ajax update="updateCustomerForm" />
+                                        </p:inputSwitch>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
                                         <p:outputLabel value="Ad:" for="firstName" />
                                     </p:column>
                                     <p:column>
                                         <p:inputText id="firstName" value="#{updateCustomerBacking.selectedCustomer.firstName}"
                                                      required="true"
-                                                     requiredMessage="Ad boş olmamalı!" size="25"/>
+                                                     requiredMessage="Ad boş olmamalı!" size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                     <p:column>
                                         <p:message for="firstName" />
@@ -41,7 +53,8 @@
                                     <p:column>
                                         <p:inputText id="lastName" value="#{updateCustomerBacking.selectedCustomer.lastName}"
                                                      required="true"
-                                                     requiredMessage="Soyad boş olmamalı!" size="25"/>
+                                                     requiredMessage="Soyad boş olmamalı!" size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                     <p:column>
                                         <p:message for="lastName" />
@@ -53,7 +66,8 @@
                                     </p:column>
                                     <p:column>
                                         <p:inputText id="email" value="#{updateCustomerBacking.selectedCustomer.email}"
-                                                     size="25"/>
+                                                     size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                 </p:row>                                               
                                 <p:row>
@@ -63,7 +77,8 @@
                                     <p:column>
                                         <p:inputText id="address1" value="#{updateCustomerBacking.selectedCustomer.address.address}"
                                                      required="true"
-                                                     requiredMessage="Addres 1 boş olmamalı!" size="25"/>
+                                                     requiredMessage="Addres 1 boş olmamalı!" size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                     <p:column>
                                         <p:message for="address1" />
@@ -75,7 +90,8 @@
                                     </p:column>
                                     <p:column>
                                         <p:inputText id="address2" value="#{updateCustomerBacking.selectedCustomer.address.address2}"
-                                                     size="25"/>
+                                                     size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -88,7 +104,8 @@
                                                          autoWidth="false" style="width: 137px;"
                                                          converter="countryConverter"
                                                          required="true" 
-                                                         requiredMessage="Ülke seçmelisiniz!">
+                                                         requiredMessage="Ülke seçmelisiniz!"
+                                                         disabled="#{!updateCustomerBacking.selectedCustomer.active}">
                                             <p:ajax update="city" />
                                             <f:selectItem itemLabel="Ülke Seçiniz" itemValue="" />
                                             <f:selectItems value="#{countryController.countryList}" var="countryItem"
@@ -109,7 +126,8 @@
                                                          autoWidth="false" style="width: 137px;"
                                                          converter="cityConverter"
                                                          required="true"
-                                                         requiredMessage="İl seçmelisiniz!">
+                                                         requiredMessage="İl seçmelisiniz!"
+                                                         disabled="#{!updateCustomerBacking.selectedCustomer.active}">
                                             <f:selectItem itemLabel="İl seçiniz" itemValue="" />
                                             <f:selectItems value="#{updateCustomerBacking.cityListBasedOnCountry}" var="cityItem"
                                                            itemValue="#{cityItem}" itemLabel="#{cityItem.city}"/>
@@ -126,7 +144,8 @@
                                     <p:column>
                                         <p:inputText id="district" value="#{updateCustomerBacking.selectedCustomer.address.district}"
                                                      required="true"
-                                                     requiredMessage="İlçe boş olmamalı!" size="25"/>
+                                                     requiredMessage="İlçe boş olmamalı!" size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                     <p:column>
                                         <p:message for="district" />
@@ -138,7 +157,8 @@
                                     </p:column>
                                     <p:column>
                                         <p:inputText id="postalCode" value="#{updateCustomerBacking.selectedCustomer.address.postalCode}"
-                                                     size="25"/>
+                                                     size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -148,7 +168,8 @@
                                     <p:column>
                                         <p:inputText id="phone" value="#{updateCustomerBacking.selectedCustomer.address.phone}"
                                                      required="true"
-                                                     requiredMessage="Telefon boş olmamalı!" size="25"/>
+                                                     requiredMessage="Telefon boş olmamalı!" size="25"
+                                                     disabled="#{!updateCustomerBacking.selectedCustomer.active}"/>
                                     </p:column>
                                     <p:column>
                                         <p:message for="phone" />
