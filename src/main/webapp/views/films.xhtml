@@ -6,36 +6,85 @@
       template="templates/template.xhtml">
     
     <ui:define name="title">
-        Personel Sayfası
+        Film Listesi
     </ui:define>
     
     <ui:define name="mainContent">
-        <h:panelGrid columns="1">
-            <h:panelGroup layout="block">
-                <h:panelGrid columns="1">
-                    <h:panelGrid columns="1">
-                        <h3>Filmler</h3>
-                        <p:dataTable>
-                            <p:column headerText="Id">
-                                <h:outputText value="10001" />
+        <h:form id="filmListForm">
+            <div class="ui-g-12 nospace">
+                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                    Film Listesi
+                </div>
+                <div class="ui-g-10 nospace">
+                    <p:panelGrid styleClass="ui-noborder" style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: right;">
+                                <p:button icon="fa fa-video-camera"
+                                          value="Film Ekle"
+                                          outcome="/views/createCustomer"/>
                             </p:column>
-
-                            <p:column headerText="Year">
-                                <h:outputText value="2015" />
-                            </p:column>
-
-                            <p:column headerText="Brand">
-                                <h:outputText value="Volkswagen" />
-                            </p:column>
-
-                            <p:column headerText="Color">
-                                <h:outputText value="Beyaz" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
-                </h:panelGrid>
-            </h:panelGroup>
-        </h:panelGrid>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+            </div>
+            <div class="ui-g-12" >
+                <p:dataTable id="filmList" value="#{filmListBacking.filmList}" var="film" widgetVar="filmsTable"
+                             rowKey="#{film.filmId}"
+                             emptyMessage="Film bulunamadı."
+                             paginator="true" paginatorPosition="bottom" rows="10"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <p:inputText id="globalFilter" onkeyup="PF('filmsTable').filter()" placeholder="Film Ara" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Film No" filterBy="#{film.filmId}" filterStyle="display:none;"
+                              style="width: 8%;">
+                        <h:outputText value="#{film.filmId}" />
+                    </p:column>
+                    <p:column headerText="Film Adı" filterBy="#{film.title}" filterStyle="display:none;">
+                        <h:outputText value="#{film.title}" />
+                    </p:column>
+                    <p:column headerText="Yıl" filterBy="#{film.releaseYear}" filterStyle="display:none">
+                        <h:outputText value="#{film.releaseYear}" />
+                    </p:column>
+                    <p:column headerText="Dil" filterBy="#{film.language.name}" filterStyle="display:none;">
+                        <h:outputText value="#{film.language.name}" />
+                    </p:column>
+                    <p:column headerText="Süre" filterBy="#{film.length}" filterStyle="display:none;">
+                        <h:outputText value="#{film.length}&#160;dk" />
+                    </p:column>
+                    <p:column headerText="Sınıf" filterBy="#{film.rating}" filterStyle="display:none;">
+                        <h:outputText value="#{film.rating}" />
+                    </p:column>
+                    <p:column headerText="Tür">
+                        <ui:repeat value="#{film.categoryList}" var="category">
+                            #{category.name}
+                        </ui:repeat>
+                    </p:column>
+                    <p:column headerText="Son Güncelleme">
+                        <h:outputText value="#{film.lastUpdate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="İşlemler" style="text-align: center; width: 15%;">
+                        <p:commandButton icon="fa fa-search" 
+                                         title="Film Bilgileri">
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-refresh" 
+                                         title="Film Bilgi Güncelle">
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-plus" 
+                                         title="Envantere Ekle">
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-minus" 
+                                         title="Envanterden Çıkar">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
     </ui:define>
     
 </ui:composition>
