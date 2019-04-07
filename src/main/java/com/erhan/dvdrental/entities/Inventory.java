@@ -37,9 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "inventory")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Inventory.findAll", query = "SELECT \u0131 FROM Inventory \u0131")
-    , @NamedQuery(name = "Inventory.findByInventoryId", query = "SELECT \u0131 FROM Inventory \u0131 WHERE \u0131.inventoryId = :inventoryId")
-    , @NamedQuery(name = "Inventory.findByLastUpdate", query = "SELECT \u0131 FROM Inventory \u0131 WHERE \u0131.lastUpdate = :lastUpdate")})
+    @NamedQuery(name = "Inventory.findAll", query = "SELECT i FROM Inventory i")
+    , @NamedQuery(name = "Inventory.findByInventoryId", query = "SELECT i FROM Inventory i WHERE i.inventoryId = :inventoryId")
+    , @NamedQuery(name = "Inventory.findByLastUpdate", query = "SELECT i FROM Inventory i WHERE i.lastUpdate = :lastUpdate")})
 public class Inventory implements Serializable {
 
     private static final long serialVersionUID = 1L;

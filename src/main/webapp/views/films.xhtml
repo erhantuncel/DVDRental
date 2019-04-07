@@ -69,8 +69,11 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center; width: 15%;">
-                        <p:commandButton icon="fa fa-search" 
+                        <p:commandButton icon="fa fa-search" update="mainForm:filmDetailForm"
+                                         oncomplete="PF('filmDetailDialog').show()"
+                                         action="#{filmDetailBacking.prepareInventoryInfoForFilm()}"
                                          title="Film Bilgileri">
+                            <f:setPropertyActionListener value="#{film}" target="#{filmDetailBacking.selectedFilm}" />
                         </p:commandButton>
                         <p:commandButton icon="fa fa-refresh" 
                                          title="Film Bilgi Güncelle">
@@ -85,6 +88,7 @@
                 </p:dataTable>
             </div>
         </h:form>
+        <ui:include src="filmDetail.xhtml" />
     </ui:define>
     
 </ui:composition>
