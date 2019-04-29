@@ -10,17 +10,16 @@
     </ui:define>
 
     <ui:define name="mainContent">
-        <h:form id="createStaffForm">
-
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Şube Kayıt
-                </div>
-                <div class="ui-g-10 nospace">
-
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Şube Kayıt
             </div>
-            <div class="ui-g-12 nospace" >
+            <div class="ui-g-10 nospace">
+
+            </div>
+        </div>
+        <div class="ui-g-12 nospace" >
+            <h:form id="createStaffForm">
                 <p:panelGrid id="createStorePanelGrid" styleClass="ui-noborder" style="width: 100%;">
                     <p:row>
                         <p:column style="width: 30%;">
@@ -143,12 +142,12 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-            </div>
-            <div class="ui-g-12 nospace">
+            </h:form>
+        </div>
+        <div class="ui-g-12 nospace">
 
-            </div>
+        </div>
 
-        </h:form>
     </ui:define>
 
 </ui:composition>

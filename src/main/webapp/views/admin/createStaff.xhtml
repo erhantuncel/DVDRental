@@ -10,17 +10,16 @@
     </ui:define>
 
     <ui:define name="mainContent">
-        <h:form id="createStaffForm">
-
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Personel Kayıt
-                </div>
-                <div class="ui-g-10 nospace">
-
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Personel Kayıt
             </div>
-            <div class="ui-g-12 nospace" >
+            <div class="ui-g-10 nospace">
+
+            </div>
+        </div>
+        <div class="ui-g-12 nospace" >
+            <h:form id="createStaffForm">
                 <p:panelGrid id="createStaffPanelGrid" styleClass="ui-noborder" style="width: 100%;">
                     <p:row>
                         <p:column style="width: 30%;">
@@ -203,7 +202,7 @@
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="65000"
                                           invalidFileMessage="Resim .gif, .jpeg ya da .png formatinda olmalı."
                                           invalidSizeMessage="Resim boyutu en fazla 65 kB olmalı."
-                                          update="mainForm:createStaffForm:createStaffImagePanelGrid"
+                                          update="createStaffForm:createStaffImagePanelGrid"
                                           />
                                     </p:column>
                                 </p:row>
@@ -223,12 +222,13 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-            </div>
-            <div class="ui-g-12 nospace">
+            </h:form>
+        </div>
 
-            </div>
+        <div class="ui-g-12 nospace">
 
-        </h:form>
+        </div>
+
         <ui:include src="staffDetail.xhtml" />
     </ui:define>
 

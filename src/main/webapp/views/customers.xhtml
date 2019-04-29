@@ -10,24 +10,24 @@
     </ui:define>
 
     <ui:define name="mainContent">
-        <h:form id="customerListForm">
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Müşteri Listesi
-                </div>
-                <div class="ui-g-10 nospace">
-                    <p:panelGrid styleClass="ui-noborder" style="width: 100%">
-                        <p:row>
-                            <p:column style="text-align: right;">
-                                <p:button icon="fa fa-gears"
-                                          value="Müşteri Ekle"
-                                          outcome="/views/createCustomer"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Müşteri Listesi
             </div>
-            <div class="ui-g-12" >
+            <div class="ui-g-10 nospace">
+                <p:panelGrid styleClass="ui-noborder" style="width: 100%">
+                    <p:row>
+                        <p:column style="text-align: right;">
+                            <p:button icon="fa fa-gears"
+                                      value="Müşteri Ekle"
+                                      outcome="/views/createCustomer"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </div>
+        <div class="ui-g-12" >
+            <h:form id="customerListForm">
                 <p:dataTable id="customerList" value="#{customerListBacking.customerList}" var="customer" widgetVar="customersTable"
                              rowKey="#{customer.customerId}"
                              emptyMessage="Müşteri bulunamadı."
@@ -58,21 +58,21 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center; width: 10%;">
-                        <p:commandButton icon="fa fa-search" update="mainForm:customerDetailForm"
+                        <p:commandButton icon="fa fa-search" update="customerDetailForm"
                                          oncomplete="PF('customerDetailDialog').show()"
                                          title="Müşteri Bilgileri">
                             <f:setPropertyActionListener value="#{customer}" target="#{updateCustomerBacking.selectedCustomer}" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-refresh" update="mainForm:updateCustomerForm" 
+                        <p:commandButton icon="fa fa-refresh" update="updateCustomerForm" 
                                          oncomplete="PF('updateCustomerDialog').show()"
                                          title="Müşteri Bilgi Güncelle">
                             <f:setPropertyActionListener value="#{customer}" target="#{updateCustomerBacking.selectedCustomer}" />
-                            <p:resetInput target="mainForm:updateCustomerForm" />
+                            <p:resetInput target="updateCustomerForm" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-            </div>
-        </h:form>
+            </h:form>
+        </div>
         <ui:include src="customerDetail.xhtml" />
         <ui:include src="updateCustomer.xhtml" />
     </ui:define>

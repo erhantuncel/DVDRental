@@ -183,7 +183,7 @@
                             <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
                                              oncomplete="PF('updateCustomerDialog').hide();"/>
                             <p:commandButton value="Güncelle" icon="fa fa-save" style="float: right;" 
-                                             update="@form, mainForm:customerListForm:customerList" process="updateCustomerForm"
+                                             update="@form, customerListForm:customerList" process="updateCustomerForm"
                                              action="#{updateCustomerBacking.updateCustomer()}"
                                              oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateCustomerDialog').hide()"/>
                         </p:column>

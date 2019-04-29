@@ -10,25 +10,24 @@
     </ui:define>
     
     <ui:define name="mainContent">
-        <h:form id="storeListForm">
-
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Şube Listesi
-                </div>
-                <div class="ui-g-10 nospace">
-                    <p:panelGrid styleClass="ui-noborder" style="width: 100%">
-                        <p:row>
-                            <p:column style="text-align: right;">
-                                <p:button icon="fa fa-gears"
-                                          value="Şube Ekle"
-                                          outcome="/views/admin/createStore"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Şube Listesi
             </div>
-            <div class="ui-g-12" >
+            <div class="ui-g-10 nospace">
+                <p:panelGrid styleClass="ui-noborder" style="width: 100%">
+                    <p:row>
+                        <p:column style="text-align: right;">
+                            <p:button icon="fa fa-gears"
+                                      value="Şube Ekle"
+                                      outcome="/views/admin/createStore"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </div>
+        <div class="ui-g-12" >
+            <h:form id="storeList">
                 <p:dataTable id="storeList" value="#{storeListBacking.storeList}" var="store" widgetVar="storesTable"
                              rowKey="#{store.storeId}"
                              emptyMessage="Şube bulunamadı."
@@ -43,7 +42,7 @@
                     <p:column headerText="Şube No" filterBy="#{store.storeId}" filterStyle="display:none;">
                         <h:outputText value="#{store.storeId}" />
                     </p:column>
-                    
+
                     <p:column headerText="Adres" filterBy="#{store.address.address}" filterStyle="display:none;">
                         <h:outputText value="#{store.address.address}&#160;#{store.address.address2}" />
                     </p:column>
@@ -51,7 +50,7 @@
                     <p:column headerText="Telefon" filterBy="#{store.address.phone}" filterStyle="display:none;">
                         <h:outputText value="#{store.address.phone}" />
                     </p:column>
-                    
+
                     <p:column headerText="Şehir" filterBy="#{store.address.city.city}" filterStyle="display:none;">
                         <h:outputText value="#{store.address.city.city}" />
                     </p:column>
@@ -59,25 +58,25 @@
                     <p:column headerText="Ülke" filterBy="#{store.address.city.country.country}" filterStyle="display:none;">
                         <h:outputText value="#{store.address.city.country.country}" />
                     </p:column>
-                    
+
                     <p:column headerText="Yetkili" filterBy="#{store.managerStaff.firstName}" filterStyle="display:none;">
                         <h:outputText value="#{store.managerStaff.firstName}&#160;#{store.managerStaff.lastName}"/>
                     </p:column>
-                    
-                    
+
+
                     <p:column headerText="Son Güncelleme">
                         <h:outputText value="#{store.lastUpdate}">
                             <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center;">
-                        <p:commandButton icon="fa fa-refresh" update="mainForm:updateStoreForm"
+                        <p:commandButton icon="fa fa-refresh" update="updateStoreForm"
                                          oncomplete="PF('updateStoreDialog').show()"
                                          title="Şube Bilgi Güncelle">
                             <f:setPropertyActionListener value="#{store}" target="${updateStoreBacking.selectedStore}" />
-                            <p:resetInput target="mainForm:updateStoreForm" />
+                            <p:resetInput target="updateStoreForm" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-user-plus" update="mainForm:updateStoreManagerForm"
+                        <p:commandButton icon="fa fa-user-plus" update="updateStoreManagerForm"
                                          oncomplete="PF('updateStoreManagerDialog').show()"
                                          actionListener="#{updateStoreBacking.loadStaffListForManage}"
                                          title="Yetkili Güncelle">
@@ -85,12 +84,12 @@
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-            </div>
-            <div class="ui-g-12 nospace">
+            </h:form>
+        </div>
+        <div class="ui-g-12 nospace">
 
-            </div>
+        </div>
 
-        </h:form>
         <ui:include src="updateStore.xhtml" />
         <ui:include src="updateStoreManager.xhtml" />
     </ui:define>

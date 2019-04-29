@@ -10,25 +10,25 @@
     </ui:define>
 
     <ui:define name="mainContent">
-        <h:form id="staffListForm">
-
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Personel Listesi
-                </div>
-                <div class="ui-g-10 nospace">
-                    <p:panelGrid styleClass="ui-noborder" style="width: 100%">
-                        <p:row>
-                            <p:column style="text-align: right;">
-                                <p:button icon="fa fa-user-plus"
-                                          value="Personel Ekle"
-                                          outcome="/views/admin/createStaff"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Personel Listesi
             </div>
-            <div class="ui-g-12" >
+            <div class="ui-g-10 nospace">
+                <p:panelGrid styleClass="ui-noborder" style="width: 100%">
+                    <p:row>
+                        <p:column style="text-align: right;">
+                            <p:button icon="fa fa-user-plus"
+                                      value="Personel Ekle"
+                                      outcome="/views/admin/createStaff"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </div>
+        <div class="ui-g-12" >
+            <h:form id="staffListForm">
+                
                 <p:dataTable id="staffList" value="#{staffListBacking.staffList}" var="staff" widgetVar="staffsTable"
                              rowKey="#{staff.staffId}"
                              emptyMessage="Personel bulunamadı."
@@ -66,25 +66,25 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center;">
-                        <p:commandButton icon="fa fa-search" update="mainForm:staffDetailForm" 
+                        <p:commandButton icon="fa fa-search" update="staffDetailForm" 
                                          oncomplete="PF('staffDetailDialog').show()"
                                          title="Personel Detayları">
                             <f:setPropertyActionListener value="#{staff}" target="${updateStaffBacking.selectedStaff}" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-refresh" update="mainForm:updateStaffForm" 
+                        <p:commandButton icon="fa fa-refresh" update="updateStaffForm" 
                                          oncomplete="PF('updateStaffDialog').show()"
                                          title="Personel Bilgi Güncelle">
                             <f:setPropertyActionListener value="#{staff}" target="${updateStaffBacking.selectedStaff}" />
-                            <p:resetInput target="mainForm:updateStaffForm" />
+                            <p:resetInput target="updateStaffForm" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-            </div>
-            <div class="ui-g-12 nospace">
+            </h:form>
+        </div>
+        <div class="ui-g-12 nospace">
 
-            </div>
+        </div>
 
-        </h:form>
         <ui:include src="staffDetail.xhtml" />
         <ui:include src="staffUploadImage.xhtml" />
         <ui:include src="updateStaff.xhtml" />
