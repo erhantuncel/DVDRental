@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        <p:dialog id="updateFilmDialog" widgetVar="updateFilmDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Film Bilgileri Güncelleme"
+                  width="930" height="480" closable="false" dynamic="true">
+            <p:ajax event="close" listener="#{updateFilmBacking.hideUpdateFilmDialog()}" />
+            <h:form id="updateFilmForm">
+                <p:panelGrid id="updateFilmPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row>
+                        <p:column style="width: 50%;">
+                            <p:panelGrid style="width: 100%;">
+                                <p:row>
+                                    <p:column style="font-weight: bold; width: 45%;">Film No:</p:column>
+                                    <p:column style="width: 45%">#{updateFilmBacking.selectedFilm.filmId}</p:column>
+                                    <p:column style="width: 20%;" />
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Film Adı:" for="title" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="title" value="#{updateFilmBacking.selectedFilm.title}"
+                                                     required="true"
+                                                     requiredMessage="Film Adı boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="title" display="icon"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Yıl:" for="releaseYear" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="releaseYear" value="#{updateFilmBacking.selectedFilm.releaseYear}"
+                                                     required="true"
+                                                     requiredMessage="Yıl boş olmamalı!" size="25"
+                                                     validatorMessage="Yıl 4 haneli olmalı.">
+
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="releaseYear" display="icon" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Dil:" for="language" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="language" value="#{updateFilmBacking.selectedFilm.language}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="languageConverter"
+                                                         required="true" 
+                                                         requiredMessage="Dil seçmelisiniz!">
+                                            <f:selectItem itemLabel="Dil Seçiniz" itemValue="" />
+                                            <f:selectItems value="#{languageController.languageList}" var="languageItem"
+                                                           itemValue="#{languageItem}" itemLabel="#{languageItem.name}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="language" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Orjinal Dil:" for="originallanguage" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="originallanguage" value="#{updateFilmBacking.selectedFilm.originalLanguage}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="languageConverter"
+                                                         requiredMessage="Dil seçmelisiniz!">
+                                            <f:selectItem itemLabel="Orjinal Dili Seçiniz" itemValue="" />
+                                            <f:selectItems value="#{languageController.languageList}" var="languageItem"
+                                                           itemValue="#{languageItem}" itemLabel="#{languageItem.name}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="originallanguage" display="icon" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                        <p:column style="width: 50%;">
+                            <p:panelGrid style="width: 100%;">
+                                <p:row>
+                                    <p:column style="font-weight: bold; width: 45%;">
+                                        <p:outputLabel value="Süre (dk):" for="length" />
+                                    </p:column>
+                                    <p:column style="width: 45%;">
+                                        <p:inputText id="length" value="#{updateFilmBacking.selectedFilm.length}"
+                                                     required="true"
+                                                     requiredMessage="Süre boş olmamalı!" size="25">
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column style="width: 10%;">
+                                        <p:message for="length" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Sınıf :" for="rating" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="rating" value="#{updateFilmBacking.selectedFilm.rating}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         required="true"
+                                                         requiredMessage="Sınıf seçmelisiniz!">
+                                            <f:selectItem itemLabel="Sınıf seçiniz" itemValue="" />
+                                            <f:selectItems value="#{updateFilmBacking.filmRatings}" var="filmRating"
+                                                           itemValue="#{filmRating.label}" itemLabel="#{filmRating.label}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="rating" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Kiralama Ücreti:" for="rentalRate" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="rentalRate" value="#{updateFilmBacking.selectedFilm.rentalRate}"
+                                                     required="true" requiredMessage="Kiralama ücreti boş olmamalı!" 
+                                                     converterMessage="Gerçerli bir sayı giriniz. Örnek: 2.89" size="25" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="rentalRate" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Kiralama Süresi (gün)" for="rentalDuration" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="rentalDuration" value="#{updateFilmBacking.selectedFilm.rentalDuration}"
+                                                     required="true"
+                                                     requiredMessage="Kiralama süresi boş olmamalı!" size="25"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="rentalDuration" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Onarma Ücreti :" for='replacementCost' />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="replacementCost" value="#{updateFilmBacking.selectedFilm.replacementCost}"
+                                                     required="true"
+                                                     requiredMessage="Onarma ücreti boş olmamalı!" size="25" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="replacementCost" display="icon" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    <p:row style="vertical-align: top;">
+                        <p:column>
+                            <p:panelGrid style="width: 100%;">
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">
+                                        <h:outputLabel value="Kategori:" for="categoryList"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:selectManyCheckbox id="categoryList" layout="grid" columns="4" 
+                                                              value="#{updateFilmBacking.selectedCategories}" 
+                                                              required="true">
+                                            <f:selectItems value="#{categoryController.categoryList}" var="category"
+                                                           itemLabel="#{category.name}" itemValue="#{category}" />
+                                        </p:selectManyCheckbox>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="categoryList" display="icon" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">
+                                        <h:outputLabel value="Konu:" for="description"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:inputTextarea id="description" value="#{updateFilmBacking.selectedFilm.description}" 
+                                                         autoResize="false" cols="67" rows="7" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="description" display="icon" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                        <p:column>
+                            <p:panelGrid id="actorListPanelGrid">
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <h:outputLabel value="Oyuncu Listesi:" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:inputText id="actorFirtsName" placeholder="Oyuncu Ad" size="22"
+                                                     value="#{updateFilmBacking.actor.firstName}" 
+                                                     required="#{param['updateFilmForm:updateFilmbtn'] == null}">
+                                            <f:validateBean disabled="true" />
+                                        </p:inputText>&#160;
+                                        <p:inputText id="actorSurname" placeholder="Oyuncu Soyad" size="22"
+                                                     value="#{updateFilmBacking.actor.lastName}"
+                                                     required="#{param['updateFilmForm:updateFilmbtn'] == null}">
+                                            <f:validateBean disabled="true" />
+                                        </p:inputText>&#160;
+                                        <p:commandButton id="collector_add_btn" value="Oyuncu Ekle" action="#{updateFilmBacking.reInitActor()}"
+                                                         process="updateFilmForm"
+                                                         update="updateFilmForm actorList"> 
+                                            <p:collector value="#{updateFilmBacking.actor}" addTo="#{updateFilmBacking.actorList}"
+                                                         unique="true" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:dataTable id="actorList" value="#{updateFilmBacking.selectedFilm.actorList}" var="actor"
+                                                     paginator="true" rows="5">
+                                            <p:column headerText="Ad">
+                                                <h:outputText value="#{actor.firstName}" />
+                                            </p:column>
+                                            <p:column headerText="Soyad">
+                                                <h:outputText value="#{actor.lastName}" />
+                                            </p:column>
+                                            <p:column headerText="İşlem">
+                                                <p:commandLink value="Sil" update="actorList" process="actorList">
+                                                    <p:collector value="#{actor}" removeFrom="#{updateFilmBacking.actorList}" unique="true" />
+                                                </p:commandLink>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
+                                             oncomplete="PF('updateFilmDialog').hide();"/>
+                            <p:commandButton id="updateFilmbtn"
+                                             value="Güncelle" icon="fa fa-save" style="float: right;"
+                                             update="@form filmListForm:filmList" process="updateFilmForm"
+                                             action="#{updateFilmBacking.updateFilm()}"
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateFilmDialog').hide()">
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

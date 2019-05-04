@@ -10,24 +10,24 @@
     </ui:define>
     
     <ui:define name="mainContent">
-        <h:form id="filmListForm">
-            <div class="ui-g-12 nospace">
-                <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
-                    Film Listesi
-                </div>
-                <div class="ui-g-10 nospace">
-                    <p:panelGrid styleClass="ui-noborder" style="width: 100%">
-                        <p:row>
-                            <p:column style="text-align: right;">
-                                <p:button icon="fa fa-video-camera"
-                                          value="Film Ekle"
-                                          outcome="/views/createCustomer"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                </div>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2" style="font-size: medium; font-weight: bold;">
+                Film Listesi
             </div>
-            <div class="ui-g-12" >
+            <div class="ui-g-10 nospace">
+                <p:panelGrid styleClass="ui-noborder" style="width: 100%">
+                    <p:row>
+                        <p:column style="text-align: right;">
+                            <p:button icon="fa fa-video-camera"
+                                      value="Film Ekle"
+                                      outcome="/views/createCustomer"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </div>
+        <div class="ui-g-12" >
+            <h:form id="filmListForm">
                 <p:dataTable id="filmList" value="#{filmListBacking.filmList}" var="film" widgetVar="filmsTable"
                              rowKey="#{film.filmId}"
                              emptyMessage="Film bulunamadı."
@@ -69,14 +69,17 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="İşlemler" style="text-align: center; width: 15%;">
-                        <p:commandButton icon="fa fa-search" update="mainForm:filmDetailForm"
+                        <p:commandButton icon="fa fa-search" update="filmDetailForm"
                                          oncomplete="PF('filmDetailDialog').show()"
                                          action="#{filmDetailBacking.prepareInventoryInfoForFilm()}"
                                          title="Film Bilgileri">
                             <f:setPropertyActionListener value="#{film}" target="#{filmDetailBacking.selectedFilm}" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-refresh" 
+                        <p:commandButton icon="fa fa-refresh" update="updateFilmForm" 
+                                         oncomplete="PF('updateFilmDialog').show()"
                                          title="Film Bilgi Güncelle">
+                            <f:setPropertyActionListener value="#{film}" target="#{updateFilmBacking.selectedFilm}" />
+                            <p:resetInput target="updateFilmForm" />
                         </p:commandButton>
                         <p:commandButton icon="fa fa-plus" 
                                          title="Envantere Ekle">
@@ -86,9 +89,10 @@
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-            </div>
-        </h:form>
+            </h:form>
+        </div>
         <ui:include src="filmDetail.xhtml" />
+        <ui:include src="updateFilm.xhtml" />
     </ui:define>
     
 </ui:composition>
