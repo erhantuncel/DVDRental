@@ -105,7 +105,7 @@
                         <p:column colspan="2">
                             <p:dataTable value="#{filmDetailBacking.inventoryInfoList}" var="inventoryInfo">
                                 <p:column headerText="Şube">
-                                    <h:outputText value="#{inventoryInfo.store.address.city.city}-#{inventoryInfo.store.address.city.country.country}" />
+                                    <h:outputText value="#{inventoryInfo.store.address.city.city}-#{inventoryInfo.store.address.city.country.country} (#{inventoryInfo.store.address.district})" />
                                 </p:column>
                                 <p:column headerText="Toplam">
                                     <h:outputText value="#{inventoryInfo.totalFilmCount}" />

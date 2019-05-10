@@ -81,10 +81,13 @@
                             <f:setPropertyActionListener value="#{film}" target="#{updateFilmBacking.selectedFilm}" />
                             <p:resetInput target="updateFilmForm" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-plus" 
+                        <p:commandButton icon="fa fa-plus" update="addFilmToInventoryDialog"
+                                         oncomplete="PF('addFilmToInventoryDialog').show()"
                                          title="Envantere Ekle">
+                            <f:setPropertyActionListener value="#{film}" target="#{addFilmToInventoryBacking.selectedFilm}" />
+                            <p:resetInput target="addFilmToInventoryDialog" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-minus" 
+                        <p:commandButton icon="fa fa-minus"
                                          title="Envanterden Çıkar">
                         </p:commandButton>
                     </p:column>
@@ -93,6 +96,7 @@
         </div>
         <ui:include src="filmDetail.xhtml" />
         <ui:include src="updateFilm.xhtml" />
+        <ui:include src="addFilmToInventory.xhtml" />
     </ui:define>
     
 </ui:composition>

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:compositePages="http://java.sun.com/jsf/composite/compositePages">
+
+    <ui:composition>
+        <p:dialog id="addFilmToInventoryDialog" widgetVar="addFilmToInventoryDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Envantere Ekleme"
+                  width="390" height="140" closable="false" dynamic="true">
+            <p:ajax event="close" listener="#{addFilmToInventoryBacking.hideAddRemoveInventoryDialog()}" />
+            <h:form id="addFilmToInventoryForm">
+                <p:panelGrid id="addFilmToInventoryPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row>
+                        <p:column style="font-weight: bold; width: 20%;">Film :</p:column>
+                        <p:column style="width: 50%">#{addFilmToInventoryBacking.selectedFilm.title}</p:column>
+                        <p:column style="width: 30%;" />
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <p:outputLabel value="Adet :" for="count" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="count" value="#{addFilmToInventoryBacking.count}" 
+                                       size="2" required="true" requiredMessage="Adet boş olmamalı."
+                                       min="1"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="count" display="icon"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <p:outputLabel value="Şube:" for="store" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="store" value="#{addFilmToInventoryBacking.store}"
+                                             autoWidth="false" style="width: 137px;"
+                                             converter="storeConverter"
+                                             required="true"
+                                             requiredMessage="Şube seçmelisiniz!">
+                                <f:selectItem itemLabel="Şube seçiniz" itemValue="" />
+                                <f:selectItems value="#{storeController.storeList}" var="store"
+                                               itemValue="#{store}" 
+                                               itemLabel="#{store.address.city.city}-#{store.address.city.country.country} (#{store.address.district})"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="store" display="icon" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
+                                             oncomplete="PF('addFilmToInventoryDialog').hide();"/>
+                            <p:commandButton value="Ekle" icon="fa fa-plus" style="float: right;"
+                                             update="@form" process="addFilmToInventoryForm"
+                                             action="#{addFilmToInventoryBacking.addFilmToInventory()}"
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addFilmToInventoryDialog').hide()">
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
