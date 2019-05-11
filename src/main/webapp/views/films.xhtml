@@ -87,9 +87,6 @@
                             <f:setPropertyActionListener value="#{film}" target="#{addFilmToInventoryBacking.selectedFilm}" />
                             <p:resetInput target="addFilmToInventoryDialog" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-minus"
-                                         title="Envanterden Çıkar">
-                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </h:form>
@@ -97,7 +94,7 @@
         <ui:include src="filmDetail.xhtml" />
         <ui:include src="updateFilm.xhtml" />
         <ui:include src="addFilmToInventory.xhtml" />
-    </ui:define>
+     </ui:define>
     
 </ui:composition>
 
