@@ -259,7 +259,7 @@
                                              value="Güncelle" icon="fa fa-save" style="float: right;"
                                              update="@form filmListForm:filmList" process="updateFilmForm"
                                              action="#{updateFilmBacking.updateFilm()}"
-                                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateFilmDialog').hide()">
+                                             oncomplete="PF('updateFilmDialog').hide()">
                             </p:commandButton>
                         </p:column>
                     </p:row>
