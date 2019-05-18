@@ -3,16 +3,17 @@ package com.erhan.dvdrental.jsf;
 import com.erhan.dvdrental.entities.Actor;
 import com.erhan.dvdrental.entities.Category;
 import com.erhan.dvdrental.entities.Film;
+import com.erhan.dvdrental.jpa.facade.ActorFacade;
 import com.erhan.dvdrental.jpa.facade.CategoryFacade;
 import com.erhan.dvdrental.jpa.facade.FilmFacade;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -29,14 +30,19 @@ public class UpdateFilmBacking implements Serializable {
     @EJB
     private CategoryFacade categoryFacade;
     
+    @EJB
+    private ActorFacade actorFacade;
+    
     private Film selectedFilm;
     private List<Category> selectedCategories;
     private Actor actor;
     
     private String actorFirstName;
     private String actorLastName;
-    private List<Actor> actorList;
-
+    private Set<Actor> actorList;
+    private Set<Actor> newActorList;
+    
+    
     public UpdateFilmBacking() {
     }
 
@@ -44,7 +50,8 @@ public class UpdateFilmBacking implements Serializable {
     public void init() {
         actor = new Actor();
         actor.setLastUpdate(new Date());
-        actorList = new ArrayList<>();
+        actorList = new HashSet<>();
+        newActorList = new HashSet<>();
     }
     public FilmFacade getFilmFacade() {
         return filmFacade;
@@ -61,6 +68,14 @@ public class UpdateFilmBacking implements Serializable {
     public void setCategoryFacade(CategoryFacade categoryFacade) {
         this.categoryFacade = categoryFacade;
     }
+
+    public ActorFacade getActorFacade() {
+        return actorFacade;
+    }
+
+    public void setActorFacade(ActorFacade actorFacade) {
+        this.actorFacade = actorFacade;
+    }
     
     public Film getSelectedFilm() {
         return selectedFilm;
@@ -70,6 +85,7 @@ public class UpdateFilmBacking implements Serializable {
         this.selectedFilm = selectedFilm;
         setSelectedCategories(selectedFilm.getCategoryList());
         setActorList(selectedFilm.getActorList());
+        System.out.println("setSelectedFilm is invoked.");
     }
 
     public List<Category> getSelectedCategories() {
@@ -104,11 +120,11 @@ public class UpdateFilmBacking implements Serializable {
         this.actor = actor;
     }
 
-    public List<Actor> getActorList() {
+    public Set<Actor> getActorList() {
         return actorList;
     }
 
-    public void setActorList(List<Actor> actorList) {
+    public void setActorList(Set<Actor> actorList) {
         this.actorList = actorList;
     }
     
@@ -121,6 +137,7 @@ public class UpdateFilmBacking implements Serializable {
     }
     
     public String reInitActor() {
+        this.newActorList.add(this.actor);
         this.actor = new Actor();
         actor.setLastUpdate(new Date());
         System.out.println("re-initialization Actor");
@@ -134,7 +151,23 @@ public class UpdateFilmBacking implements Serializable {
     public void updateFilm() {
         System.out.println("updateFilm is invoked.");
         selectedFilm.setCategoryList(selectedCategories);
-        selectedFilm.setActorList(actorList);
+        if(newActorList != null && newActorList.size() > 0) {
+            int actorInDb = 0;
+            for(Actor newActor : newActorList) {
+                List<Actor> foundActorList = actorFacade.findByLastName(newActor.getLastName());
+                if(foundActorList != null && foundActorList.size() > 0) {
+                    for(Actor actorInFoundActorList : foundActorList) {
+                        if(actorInFoundActorList.getFirstName().equals(newActor.getFirstName())) {
+                            selectedFilm.getActorList().remove(newActor);
+                            selectedFilm.getActorList().add(actorInFoundActorList);
+                            actorInFoundActorList.getFilms().add(selectedFilm);
+                            actorInDb++;
+                        }
+                    }
+                }
+                newActor.getFilms().add(selectedFilm);
+            }
+        }
         selectedFilm.setLastUpdate(new Date());
         filmFacade.edit(selectedFilm);
         System.out.println(selectedFilm.getTitle() + " is updated.");

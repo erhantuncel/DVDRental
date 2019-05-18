@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -116,7 +118,7 @@ public class Film implements Serializable {
     private List<Inventory> inventoryList = new ArrayList<>();
     
     // Instead of composite primary key added ManyToOne relation
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name="film_category", 
                 joinColumns = {@JoinColumn(name="film_id")},
                 inverseJoinColumns = {@JoinColumn(name="category_id")})
@@ -126,7 +128,7 @@ public class Film implements Serializable {
     @JoinTable(name = "film_actor",
                 joinColumns = {@JoinColumn(name = "film_id")},
                 inverseJoinColumns = {@JoinColumn(name = "actor_id")})
-    private List<Actor> actorList = new ArrayList<>();
+    private Set<Actor> actorList = new HashSet<>();
 
     public Film() {
     }
@@ -271,11 +273,11 @@ public class Film implements Serializable {
     }
 
     @XmlTransient
-    public List<Actor> getActorList() {
+    public Set<Actor> getActorList() {
         return actorList;
     }
 
-    public void setActorList(List<Actor> actorList) {
+    public void setActorList(Set<Actor> actorList) {
         this.actorList = actorList;
     }
     

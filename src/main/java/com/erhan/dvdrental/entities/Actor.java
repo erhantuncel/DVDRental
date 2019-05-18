@@ -6,11 +6,11 @@
 package com.erhan.dvdrental.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -67,8 +67,8 @@ public class Actor implements Serializable {
     private Date lastUpdate;
     
     // Instead of composite primary key added ManyToOne relation
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "actorList")
-    private List<Film> films = new ArrayList<>();
+    @ManyToMany(mappedBy = "actorList")
+    private Set<Film> films = new HashSet<>();
 
     public Actor() {
     }
@@ -115,11 +115,11 @@ public class Actor implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public List<Film> getFilms() {
+    public Set<Film> getFilms() {
         return films;
     }
 
-    public void setFilms(List<Film> films) {
+    public void setFilms(Set<Film> films) {
         this.films = films;
     }
     
@@ -131,13 +131,24 @@ public class Actor implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Actor)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Actor other = (Actor) object;
-        if ((this.actorId == null && other.actorId != null) || (this.actorId != null && !this.actorId.equals(other.actorId))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Actor other = (Actor) obj;
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.actorId, other.actorId)) {
             return false;
         }
         return true;
