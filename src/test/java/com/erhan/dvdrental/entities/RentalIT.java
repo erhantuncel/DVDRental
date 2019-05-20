@@ -7,6 +7,7 @@ package com.erhan.dvdrental.entities;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -110,5 +111,14 @@ public class RentalIT {
         assertNull(foundRentalId10AfterRemove);
         transaction.commit();
         logger.log(Level.SEVERE, "RentalIT-testRemove passed.");
+    }
+    
+    @Test
+    public void testFindByReturnDateIsNull() {
+        transaction.begin();
+        List resultList = em.createNamedQuery(Rental.FIND_BY_RETURN_DATE_IS_NULL).getResultList();
+        assertNotEquals(resultList.size(), 0);
+        System.out.println("Restult List = " + resultList.size());
+        transaction.commit();
     }
 }

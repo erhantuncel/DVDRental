@@ -6,6 +6,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 @Stateless
 public class FilmFacade extends AbstractFacade<Film> {
@@ -50,5 +54,16 @@ public class FilmFacade extends AbstractFacade<Film> {
     public List<Film> findBySpecialFeatures(String specialFeatures) {
         return em.createNamedQuery(Film.FIND_BY_SPECIAL_FEATURES)
                 .setParameter("specialFeatures", specialFeatures).getResultList();
+    }
+    
+    public List<Film> findLastUpdatedFiveFilms() {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Film> q = criteriaBuilder.createQuery(Film.class);
+        Root<Film> root = q.from(Film.class);
+        q.select(root);
+        q.orderBy(criteriaBuilder.desc(root.get("lastUpdate")));
+        TypedQuery<Film> query = em.createQuery(q);
+        query.setMaxResults(5);
+        return query.getResultList();
     }
 }

@@ -6,7 +6,7 @@
       template="templates/template.xhtml">
     
     <ui:define name="title">
-        Personel Sayfası
+        Ana Sayfa
     </ui:define>
     
     <ui:define name="mainContent">
@@ -15,21 +15,39 @@
                 <h:panelGrid columns="1">
                     <h:panelGrid columns="1">
                         <h3>Kira Süresi Bitenler</h3>
-                        <p:dataTable>
-                            <p:column headerText="Id">
-                                <h:outputText value="10001" />
+                        <p:dataTable id="overdueRentals" value="#{mainPageBacking.overdueRentals}" var="rental" 
+                                     widgetVar="overdueRentalTable" rowKey="#{rental.rentalId}" emptyMessage="Veri bulunamadı"
+                                     paginator="true" paginatorPosition="bottom" rows="10" 
+                                     sortBy="#{rental.rentalDate}"
+                                     >
+                            <p:column headerText="No" style="width: 5%;" sortBy="#{rental.rentalId}">
+                                <h:outputText value="#{rental.rentalId}" />
                             </p:column>
-
-                            <p:column headerText="Year">
-                                <h:outputText value="2015" />
+                            
+                            <p:column headerText="Film">
+                                <h:outputText value="#{rental.inventory.film.title}" />
                             </p:column>
-
-                            <p:column headerText="Brand">
-                                <h:outputText value="Volkswagen" />
+                            
+                            <p:column headerText="Müşteri">
+                                <h:outputText value="#{rental.customer.firstName}&#160;#{rental.customer.lastName}" />
                             </p:column>
-
-                            <p:column headerText="Color">
-                                <h:outputText value="Beyaz" />
+                            
+                            <p:column headerText="Telefon" style="width: 8%;">
+                                <h:outputText value="#{rental.customer.address.phone}" />
+                            </p:column>
+                            
+                            <p:column headerText="Kiralama Tarihi" style="width: 15%;" sortBy="#{rental.rentalDate}">
+                                <h:outputText value="#{rental.rentalDate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Süre" style="width: 5%;">
+                                <h:outputText value="#{rental.inventory.film.rentalDuration}" />
+                            </p:column>
+                            
+                            <p:column headerText="Personel">
+                                <h:outputText value="#{rental.staff.firstName}&#160;#{rental.staff.lastName}" />
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>
@@ -37,42 +55,53 @@
                 <h:panelGrid columns="2">
                     <h:panelGrid columns="1">
                         <h3>Son Kiralananlar</h3>
-                        <p:dataTable>
-                            <p:column headerText="Id">
-                                <h:outputText value="10001" />
+                        <p:dataTable id="lastFiveRentals" value="#{mainPageBacking.lastFiveRentals}" var="rentalInLastFive"
+                                     rowKey="#{rentalInLastFive.rentalId}" rows="5">
+                            <p:column headerText="No" style="width: 10%;">
+                                <h:outputText value="#{rentalInLastFive.rentalId}" />
                             </p:column>
 
-                            <p:column headerText="Year">
-                                <h:outputText value="2015" />
+                            <p:column headerText="Film">
+                                <h:outputText value="#{rentalInLastFive.inventory.film.title}" />
+                            </p:column>
+                            
+                            <p:column headerText="Müşteri">
+                                <h:outputText value="#{rentalInLastFive.customer.firstName}&#160;#{rentalInLastFive.customer.lastName}" />
                             </p:column>
 
-                            <p:column headerText="Brand">
-                                <h:outputText value="Volkswagen" />
-                            </p:column>
-
-                            <p:column headerText="Color">
-                                <h:outputText value="Beyaz" />
+                            <p:column headerText="Tarih" style="width: 22%">
+                                <h:outputText value="#{rentalInLastFive.rentalDate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                </h:outputText>
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>
 
                     <h:panelGrid columns="1">
-                        <h3>Son Eklenen Filmler</h3>
-                        <p:dataTable>
-                            <p:column headerText="Id">
-                                <h:outputText value="10001" />
+                        <h3>Son Güncellenen Filmler</h3>
+                        <p:dataTable id="lastUpdatedFiveFilms" value="#{mainPageBacking.lastUpdatedFiveFilms}" var="film" 
+                                     widgetVar="lastUpdatedFiveFilmTable" rowKey="#{film.filmId}"
+                                     emptyMessage="Film Bulunamadı" rows="5">
+                            <p:column headerText="No" style="width: 10%;">
+                                <h:outputText value="#{film.filmId}" />
                             </p:column>
 
-                            <p:column headerText="Year">
-                                <h:outputText value="2015" />
+                            <p:column headerText="Film" >
+                                <h:outputText value="#{film.title}" />
                             </p:column>
 
-                            <p:column headerText="Brand">
-                                <h:outputText value="Volkswagen" />
+                            <p:column headerText="Yıl" style="width: 10%;">
+                                <h:outputText value="#{film.releaseYear}" />
+                            </p:column>
+                            
+                            <p:column headerText="Süre" style="width: 10%;">
+                                <h:outputText value="#{film.length} dk." />
                             </p:column>
 
-                            <p:column headerText="Color">
-                                <h:outputText value="Beyaz" />
+                            <p:column headerText="Son Güncelleme" style="width: 22%;">
+                                <h:outputText value="#{film.lastUpdate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                </h:outputText>
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>

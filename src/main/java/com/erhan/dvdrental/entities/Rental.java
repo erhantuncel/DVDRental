@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Rental.findByRentalId", query = "SELECT r FROM Rental r WHERE r.rentalId = :rentalId")
     , @NamedQuery(name = "Rental.findByRentalDate", query = "SELECT r FROM Rental r WHERE r.rentalDate = :rentalDate")
     , @NamedQuery(name = "Rental.findByReturnDate", query = "SELECT r FROM Rental r WHERE r.returnDate = :returnDate")
+    , @NamedQuery(name = "Rental.findByReturnDateIsNull", query = "SELECT r FROM Rental r WHERE r.returnDate IS NULL")
     , @NamedQuery(name = "Rental.findByLastUpdate", query = "SELECT r FROM Rental r WHERE r.lastUpdate = :lastUpdate")})
 public class Rental implements Serializable {
 
@@ -47,6 +48,7 @@ public class Rental implements Serializable {
     
     public static final String FIND_BY_RENTAL_DATE = "Rental.findByRentalDate";
     public static final String FIND_BY_RETURN_DATE = "Rental.findByReturnDate";
+    public static final String FIND_BY_RETURN_DATE_IS_NULL = "Rental.findByReturnDateIsNull";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
