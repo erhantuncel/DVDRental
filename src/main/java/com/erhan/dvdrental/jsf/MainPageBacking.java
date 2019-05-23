@@ -1,16 +1,19 @@
 package com.erhan.dvdrental.jsf;
 
-import com.erhan.dvdrental.entities.Film;
 import com.erhan.dvdrental.entities.Rental;
+import com.erhan.dvdrental.entities.Staff;
 import com.erhan.dvdrental.jpa.facade.FilmFacade;
 import com.erhan.dvdrental.jpa.facade.RentalFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -27,19 +30,15 @@ public class MainPageBacking implements Serializable {
     private FilmFacade filmFacade;
     
     private List<Rental> overdueRentals = null;
-    private List<Rental> lastFiveRentals = null;
-    private List<Film> lastUpdatedFiveFilms = null;
+    private List<Rental> lastSixtyRentals = null;
     
     @PostConstruct
     public void init() {
         if(overdueRentals == null) {
             overdueRentals = overdueRentalList();
         }  
-        if(lastFiveRentals == null) {
-            lastFiveRentals = findLastFiveRentals();
-        }
-        if(lastUpdatedFiveFilms == null) {
-            lastUpdatedFiveFilms = findLastUpdatedFiveFilms();
+        if(lastSixtyRentals == null) {
+            lastSixtyRentals = findLastSixtyRentals();
         }
     }
     
@@ -70,24 +69,19 @@ public class MainPageBacking implements Serializable {
         this.overdueRentals = overdueRentals;
     }
 
-    public List<Rental> getLastFiveRentals() {
-        return lastFiveRentals;
+    public List<Rental> getLastSixtyRentals() {
+        return lastSixtyRentals;
     }
 
-    public void setLastFiveRentals(List<Rental> lastFiveRentals) {
-        this.lastFiveRentals = lastFiveRentals;
-    }
-
-    public List<Film> getLastUpdatedFiveFilms() {
-        return lastUpdatedFiveFilms;
-    }
-
-    public void setLastUpdatedFiveFilms(List<Film> lastUpdatedFiveFilms) {
-        this.lastUpdatedFiveFilms = lastUpdatedFiveFilms;
+    public void setLastSixtyRentals(List<Rental> lastSixtyRentals) {
+        this.lastSixtyRentals = lastSixtyRentals;
     }
 
     public List<Rental> overdueRentalList() {
-        List<Rental> rentalListReturnDateNull = rentalFacade.findByReturnDateIsNull();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Staff currentStaff = (Staff) sessionMap.get("Staff");
+        List<Rental> rentalListReturnDateNull = rentalFacade.findReturnDateIsNullByStore(currentStaff.getStoreId());
         List<Rental> overdueRentalList = new ArrayList<>();
         if(rentalListReturnDateNull != null && rentalListReturnDateNull.size() > 0) {
             for(Rental rental : rentalListReturnDateNull ) {
@@ -102,13 +96,8 @@ public class MainPageBacking implements Serializable {
         return overdueRentalList;
     }
     
-    public List<Rental> findLastFiveRentals() {
-        List<Rental> lastFiveRentalList = rentalFacade.findLastFiveRentals();
-        return lastFiveRentalList;
-    }
-    
-    public List<Film> findLastUpdatedFiveFilms() {
-        List<Film> lastUpdatedFiveFilmList = filmFacade.findLastUpdatedFiveFilms();
-        return lastUpdatedFiveFilmList;
+    public List<Rental> findLastSixtyRentals() {
+        List<Rental> lastSixtyRentalList = rentalFacade.findLastSixtyRentals();
+        return lastSixtyRentalList;
     }
 }

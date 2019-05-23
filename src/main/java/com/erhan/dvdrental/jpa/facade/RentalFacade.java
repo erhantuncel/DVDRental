@@ -1,6 +1,10 @@
 package com.erhan.dvdrental.jpa.facade;
 
+import com.erhan.dvdrental.entities.Inventory;
+import com.erhan.dvdrental.entities.Inventory_;
 import com.erhan.dvdrental.entities.Rental;
+import com.erhan.dvdrental.entities.Rental_;
+import com.erhan.dvdrental.entities.Store;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -9,6 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 @Stateless
@@ -41,14 +47,26 @@ public class RentalFacade extends AbstractFacade<Rental> {
                 .getResultList();
     }
     
-    public List<Rental> findLastFiveRentals() {
+    public List<Rental> findReturnDateIsNullByStore(Store store) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Rental> cq = cb.createQuery(Rental.class);
+        Root<Rental> rental = cq.from(Rental.class);
+        Join<Rental, Inventory> inventory = rental.join(Rental_.inventory);
+        Predicate predicateForStore = cb.equal(inventory.get(Inventory_.store), store);
+        Predicate predicateForReturnDateIsNull = cb.isNull(rental.get("returnDate"));
+        cq.select(rental).where(predicateForStore, predicateForReturnDateIsNull);
+        TypedQuery<Rental> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();        
+    }
+    
+    public List<Rental> findLastSixtyRentals() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Rental> query = criteriaBuilder.createQuery(Rental.class);
         Root<Rental> root = query.from(Rental.class);
         query.select(root);
         query.orderBy(criteriaBuilder.desc(root.get("rentalDate")));
         TypedQuery<Rental> q = em.createQuery(query);
-        q.setMaxResults(5);
+        q.setMaxResults(60);
         return q.getResultList();
     }
 }

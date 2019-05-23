@@ -1,114 +1,120 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      template="templates/template.xhtml">
-    
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="templates/template.xhtml">
+
     <ui:define name="title">
         Ana Sayfa
     </ui:define>
-    
+
     <ui:define name="mainContent">
-        <h:panelGrid columns="1">
-            <h:panelGroup layout="block">
-                <h:panelGrid columns="1">
-                    <h:panelGrid columns="1">
-                        <h3>Kira Süresi Bitenler</h3>
-                        <p:dataTable id="overdueRentals" value="#{mainPageBacking.overdueRentals}" var="rental" 
-                                     widgetVar="overdueRentalTable" rowKey="#{rental.rentalId}" emptyMessage="Veri bulunamadı"
-                                     paginator="true" paginatorPosition="bottom" rows="10" 
-                                     sortBy="#{rental.rentalDate}"
-                                     >
-                            <p:column headerText="No" style="width: 5%;" sortBy="#{rental.rentalId}">
-                                <h:outputText value="#{rental.rentalId}" />
-                            </p:column>
-                            
-                            <p:column headerText="Film">
-                                <h:outputText value="#{rental.inventory.film.title}" />
-                            </p:column>
-                            
-                            <p:column headerText="Müşteri">
-                                <h:outputText value="#{rental.customer.firstName}&#160;#{rental.customer.lastName}" />
-                            </p:column>
-                            
-                            <p:column headerText="Telefon" style="width: 8%;">
-                                <h:outputText value="#{rental.customer.address.phone}" />
-                            </p:column>
-                            
-                            <p:column headerText="Kiralama Tarihi" style="width: 15%;" sortBy="#{rental.rentalDate}">
-                                <h:outputText value="#{rental.rentalDate}" >
-                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
-                                </h:outputText>
-                            </p:column>
-                            
-                            <p:column headerText="Süre" style="width: 5%;">
-                                <h:outputText value="#{rental.inventory.film.rentalDuration}" />
-                            </p:column>
-                            
-                            <p:column headerText="Personel">
-                                <h:outputText value="#{rental.staff.firstName}&#160;#{rental.staff.lastName}" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
-                </h:panelGrid>
-                <h:panelGrid columns="2">
-                    <h:panelGrid columns="1">
-                        <h3>Son Kiralananlar</h3>
-                        <p:dataTable id="lastFiveRentals" value="#{mainPageBacking.lastFiveRentals}" var="rentalInLastFive"
-                                     rowKey="#{rentalInLastFive.rentalId}" rows="5">
-                            <p:column headerText="No" style="width: 10%;">
-                                <h:outputText value="#{rentalInLastFive.rentalId}" />
-                            </p:column>
+        <div class="ui-g-12 nospace">
+            <div class="ui-g-2">
+                <p:panelGrid styleClass="ui-noborder" columns="1" style="width: 100%; text-align: center;">
+                    <p:button icon="fa fa-video-camera" value="Film&#10;Ekle"
+                              style="white-space: pre; width: 130px; height: 120px; font-size: 16px !important;"
+                              outcome="/views/createFilm"/>
+                    <p:button icon="fa fa-users" value="Müşteri Ekle"
+                              style="width: 130px; height: 120px; font-size: 16px !important;"
+                              outcome="/views/createCustomer"/>
+                    <p:button icon="fa fa-upload" value="Film Kirala"
+                              style="width: 130px; height: 120px; font-size: 16px !important;"/>
+                    <p:button icon="fa fa-download" value="Film Teslim Al"
+                              style="width: 130px; height: 120px; font-size: 16px !important;" />
+                </p:panelGrid>
+            </div>
 
-                            <p:column headerText="Film">
-                                <h:outputText value="#{rentalInLastFive.inventory.film.title}" />
-                            </p:column>
-                            
-                            <p:column headerText="Müşteri">
-                                <h:outputText value="#{rentalInLastFive.customer.firstName}&#160;#{rentalInLastFive.customer.lastName}" />
-                            </p:column>
+            <div class="ui-g-10">
+                <h:form>
+                    <p:tabView style="height: 500px;">
+                        <p:tab id="overdueRentalsTab" title="Kira Süresi Bitenler">
+                            <p:dataTable id="overdueRentals" value="#{mainPageBacking.overdueRentals}" var="rental" 
+                                         widgetVar="overdueRentalTable" rowKey="#{rental.rentalId}" emptyMessage="Kiralama bulunamadı"
+                                         paginator="true" paginatorPosition="bottom" rows="10" 
+                                         sortBy="#{rental.rentalDate}"
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel style="text-align: right;">
+                                        <p:inputText id="globalFilter" onkeyup="PF('overdueRentalTable').filter()" placeholder="Ara" />
+                                    </p:outputPanel>
+                                </f:facet>
 
-                            <p:column headerText="Tarih" style="width: 22%">
-                                <h:outputText value="#{rentalInLastFive.rentalDate}" >
-                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
+                                <p:column headerText="No" style="width: 6%;" filterBy="#{rental.rentalId}" filterStyle="display:none;">
+                                    <h:outputText value="#{rental.rentalId}" />
+                                </p:column>
 
-                    <h:panelGrid columns="1">
-                        <h3>Son Güncellenen Filmler</h3>
-                        <p:dataTable id="lastUpdatedFiveFilms" value="#{mainPageBacking.lastUpdatedFiveFilms}" var="film" 
-                                     widgetVar="lastUpdatedFiveFilmTable" rowKey="#{film.filmId}"
-                                     emptyMessage="Film Bulunamadı" rows="5">
-                            <p:column headerText="No" style="width: 10%;">
-                                <h:outputText value="#{film.filmId}" />
-                            </p:column>
+                                <p:column headerText="Film" filterBy="#{rental.inventory.film.title}" filterStyle="display:none;">
+                                    <h:outputText value="#{rental.inventory.film.title}" />
+                                </p:column>
 
-                            <p:column headerText="Film" >
-                                <h:outputText value="#{film.title}" />
-                            </p:column>
+                                <p:column headerText="Müşteri" filterBy="#{rental.customer.firstName}" filterStyle="display:none;">
+                                    <h:outputText value="#{rental.customer.firstName}&#160;#{rental.customer.lastName}" />
+                                </p:column>
 
-                            <p:column headerText="Yıl" style="width: 10%;">
-                                <h:outputText value="#{film.releaseYear}" />
-                            </p:column>
-                            
-                            <p:column headerText="Süre" style="width: 10%;">
-                                <h:outputText value="#{film.length} dk." />
-                            </p:column>
+                                <p:column headerText="Telefon" style="width: 10%;">
+                                    <h:outputText value="#{rental.customer.address.phone}" />
+                                </p:column>
 
-                            <p:column headerText="Son Güncelleme" style="width: 22%;">
-                                <h:outputText value="#{film.lastUpdate}">
-                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
-                </h:panelGrid>
-            </h:panelGroup>
-        </h:panelGrid>
+                                <p:column headerText="Kiralama Tarihi" style="width: 14%;" sortBy="#{rental.rentalDate}">
+                                    <h:outputText value="#{rental.rentalDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Süre" style="width: 6%;">
+                                    <h:outputText value="#{rental.inventory.film.rentalDuration} gün" />
+                                </p:column>
+
+                                <p:column headerText="Personel" style="width: 14%;">
+                                    <h:outputText value="#{rental.staff.firstName}&#160;#{rental.staff.lastName}" />
+                                </p:column>
+
+                                <p:column headerText="İşlemler" style="width: 12%;">
+                                    <p:commandButton value="Teslim Al" icon="fa fa-download" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab id="lastRentalsTab" title="Son Kiralananlar">
+                            <p:dataTable id="lastRentals" value="#{mainPageBacking.lastSixtyRentals}" var="rentalInLast"
+                                         widgetVar="lastRentalsTable"
+                                         rowKey="#{rentalInLast.rentalId}" emptyMessage="Kiralama bulunamadı"
+                                         paginator="true" paginatorPosition="bottom" rows="15">
+                                <f:facet name="header">
+                                    <p:outputPanel style="text-align: right;">
+                                        <p:inputText id="globalFilter" onkeyup="PF('lastRentalsTable').filter()" placeholder="Ara" />
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="No" style="width: 6%;" filterBy="#{rentalInLast.rentalId}" filterStyle="display:none;">
+                                    <h:outputText value="#{rentalInLast.rentalId}" />
+                                </p:column>
+
+                                <p:column headerText="Film" filterBy="#{rentalInLast.inventory.film.title}" filterStyle="display:none;">
+                                    <h:outputText value="#{rentalInLast.inventory.film.title}" />
+                                </p:column>
+
+                                <p:column headerText="Müşteri" filterBy="#{rentalInLast.customer.firstName}" filterStyle="display:none;">
+                                    <h:outputText value="#{rentalInLast.customer.firstName}&#160;#{rentalInLast.customer.lastName}" />
+                                </p:column>
+                                
+                                <p:column headerText="Süre" style="width: 6%">
+                                    <h:outputText value="#{rentalInLast.inventory.film.rentalDuration} gün" />
+                                </p:column>
+                                
+                                <p:column headerText="Tarih" style="width: 14%">
+                                    <h:outputText value="#{rentalInLast.rentalDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+            </div>
+        </div>
     </ui:define>
-    
+
 </ui:composition>
 
