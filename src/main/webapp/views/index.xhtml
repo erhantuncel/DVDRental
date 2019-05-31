@@ -19,8 +19,11 @@
                     <p:button icon="fa fa-users" value="Müşteri Ekle"
                               style="width: 130px; height: 120px; font-size: 16px !important;"
                               outcome="/views/createCustomer"/>
-                    <p:button icon="fa fa-upload" value="Film Kirala"
-                              style="width: 130px; height: 120px; font-size: 16px !important;"/>
+                    <p:commandButton icon="fa fa-upload" value="Film Kirala" 
+                                     oncomplete="PF('rentFilmDialog').show()"
+                              style="width: 130px; height: 120px; font-size: 16px !important;">
+                        <p:resetInput target="rentFilmForm" />
+                    </p:commandButton>
                     <p:button icon="fa fa-download" value="Film Teslim Al"
                               style="width: 130px; height: 120px; font-size: 16px !important;" />
                 </p:panelGrid>
@@ -114,6 +117,7 @@
                 </h:form>
             </div>
         </div>
+        <ui:include src="rentFilm.xhtml" />
     </ui:define>
 
 </ui:composition>

@@ -1,5 +1,6 @@
 package com.erhan.dvdrental.jpa.facade;
 
+import com.erhan.dvdrental.entities.Customer;
 import com.erhan.dvdrental.entities.Inventory;
 import com.erhan.dvdrental.entities.Inventory_;
 import com.erhan.dvdrental.entities.Rental;
@@ -59,6 +60,17 @@ public class RentalFacade extends AbstractFacade<Rental> {
         return typedQuery.getResultList();        
     }
     
+    public List<Rental> findReturnDateIsNullByCustomer(Customer customer) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Rental> cq = cb.createQuery(Rental.class);
+        Root<Rental> rental = cq.from(Rental.class);
+        Predicate predicateForReturnDateIsNull = cb.isNull(rental.get("returnDate"));
+        Predicate predicateForCustomer = cb.equal(rental.get("customer"), customer);
+        cq.select(rental).where(predicateForCustomer, predicateForReturnDateIsNull);
+        TypedQuery<Rental> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
+    }
+    
     public List<Rental> findLastSixtyRentals() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Rental> query = criteriaBuilder.createQuery(Rental.class);
@@ -69,4 +81,14 @@ public class RentalFacade extends AbstractFacade<Rental> {
         q.setMaxResults(60);
         return q.getResultList();
     }
+    
+    public List<Rental> findByInventory(Inventory inventory) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Rental> cq= cb.createQuery(Rental.class);
+        Root<Rental> root = cq.from(Rental.class);
+        cq.select(root).where(cb.equal(root.get("inventory"), inventory));
+        TypedQuery<Rental> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
+    }
+    
 }

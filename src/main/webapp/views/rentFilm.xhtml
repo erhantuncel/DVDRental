@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        <p:dialog id="rentFilmDialog" widgetVar="rentFilmDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Film Kiralama"
+                  width="800" height="480" closable="true" dynamic="true">
+            <p:ajax event="close" listener="#{rentFilmBacking.hideRentFilmDialog()}" />
+            <h:form id="rentFilmForm">
+                <p:panelGrid id="rentFilmPanelGrid" styleClass="ui-noborder" style="width: 100%;">
+                    <p:row style="height: 470px; vertical-align: top;">
+                        <p:column style="width: 100%;">
+                            <p:importConstants type="com.erhan.dvdrental.jsf.RentFilmBacking" var="rentFilmController" />
+                            <p:wizard id="rentWizard" widgetVar="rentWizard" nextLabel="Ödeme" backLabel="Bilgileri Değiştir" 
+                                      showStepStatus="false" flowListener="#{rentFilmBacking.onFlow}"
+                                      rendered="#{rentFilmBacking.rental eq null}">
+                                <p:tab id="rentFilmInformationTab" title="Envanter ve Müşteri Bilgileri">
+                                    <div class="ui-g-12 nospace" style="height: 440px;">
+                                        <p:panelGrid style="width: 100%;">
+                                            <p:row>
+                                                <p:column style="font-weight: bold; width: 200px;">
+                                                    <p:outputLabel value="Envanter No:" for="inventoryId" />
+                                                </p:column>
+                                                <p:column style="width: 230px;">
+                                                    <p:inputText id="inventoryId" value="#{rentFilmBacking.inventoryId}" 
+                                                                 required="true" size="40" 
+                                                                 requiredMessage="Envanter boş olmamalı!">
+                                                        <p:ajax event="blur" update="@form" listener="#{rentFilmBacking.findInventory}" />
+                                                    </p:inputText>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:message for="inventoryId"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:outputLabel value="Müşteri kayıt durumu :" for="customerStatus" />
+                                                </p:column>
+                                                <p:column>
+                                                    <p:selectOneMenu id="customerStatus" value="#{rentFilmBacking.customerStatus}"
+                                                                     required="true" requiredMessage="Müşteri kayıt durumu seçmelisiniz!"
+                                                                     style="width: 210px;">
+                                                        <f:selectItem itemLabel="Seçiniz" itemValue="" />
+                                                        <f:selectItem itemLabel="Yeni Müşteri" itemValue="new" />
+                                                        <f:selectItem itemLabel="Kayıtlı Müşteri" itemValue="registered" />
+                                                        <f:ajax render="registeredCustomerOutputPanel" />
+                                                    </p:selectOneMenu>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:message for="customerStatus"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <p:outputPanel id="registeredCustomerOutputPanel">
+                                            <p:panelGrid  styleClass="ui-noborder" rendered="#{rentFilmBacking.customerStatus ne '' and rentFilmBacking.customerStatus eq 'registered'}">
+                                                <p:row>
+                                                    <p:column style="font-weight: bold; width: 200px;">
+                                                        <p:outputLabel value="Müşteri Seç: " for="registeredCustomer" />
+                                                    </p:column>
+                                                    <p:column style="width: 230px;">
+                                                        <p:autoComplete id="registeredCustomer" value="#{rentFilmBacking.customer}" var="customer" 
+                                                                        required="true" requiredMessage="Müşteri seçmelisiniz"
+                                                                        forceSelection="true" completeMethod="#{rentFilmBacking.completeCustomer}"
+                                                                        converter="customerConverter" minQueryLength="3" size="40"
+                                                                        itemValue="#{customer}" itemLabel="#{customer.firstName}&#160;#{customer.lastName}">
+                                                        </p:autoComplete>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="registeredCustomer"/>
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                            <p:panelGrid  styleClass="ui-noborder" rendered="#{rentFilmBacking.customerStatus ne '' and rentFilmBacking.customerStatus eq 'new'}">
+                                                <p:row>
+                                                    <p:column style="font-weight: bold; width: 200px;">
+                                                        <p:outputLabel value="Ad: " for="firstName" />
+                                                    </p:column>
+                                                    <p:column style="width: 230px;">
+                                                        <p:inputText id="firstName" value="#{createCustomerBacking.firstName}"
+                                                                     required="true" size="40"
+                                                                     requiredMessage="Ad boş olmamalı!"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="firstName"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Soyad:" for="lastName" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="lastName" value="#{createCustomerBacking.lastName}"
+                                                                     required="true" size="40"
+                                                                     requiredMessage="Soyad boş olmamalı!"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="lastName"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Email:" for="email" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="email" value="#{createCustomerBacking.email}"
+                                                                     size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="email"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Adres 1:" for="address1" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="address1" value="#{createCustomerBacking.address1}"
+                                                                     required="true"
+                                                                     requiredMessage="Addres 1 boş olmamalı!" size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="address1"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Adres 2:" for="address2" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="address2" value="#{createCustomerBacking.address2}"
+                                                                     size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="address2"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Ülke:" for="country" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:selectOneMenu id="country" value="#{createCustomerBacking.country}"
+                                                                         valueChangeListener="#{createCustomerBacking.countrySelectOneMenuValueChanged}"
+                                                                         autoWidth="false" style="width: 210px;" 
+                                                                         converter="countryConverter"
+                                                                         required="true" 
+                                                                         requiredMessage="Ülke seçmelisiniz!">
+                                                            <p:ajax update="city" />
+                                                            <f:selectItem itemLabel="Ülke Seçiniz" itemValue="" />
+                                                            <f:selectItems value="#{countryController.countryList}" var="countryItem"
+                                                                           itemValue="#{countryItem}" itemLabel="#{countryItem.country}"/>
+                                                        </p:selectOneMenu>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="country"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="İl:" for="city" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:selectOneMenu id="city" value="#{createCustomerBacking.city}"
+                                                                         autoWidth="false" style="width: 210px;"
+                                                                         converter="cityConverter"
+                                                                         required="true"
+                                                                         requiredMessage="İl seçmelisiniz!">
+                                                            <f:selectItem itemLabel="İl seçiniz" itemValue="" />
+                                                            <f:selectItems value="#{createCustomerBacking.cityListBasedOnCountry}" var="cityItem"
+                                                                           itemValue="#{cityItem}" itemLabel="#{cityItem.city}"/>
+                                                        </p:selectOneMenu>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="city"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="İlçe:" for="district" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="district" value="#{createCustomerBacking.district}"
+                                                                     required="true"
+                                                                     requiredMessage="İlçe boş olmamalı!" size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="district"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Posta Kodu:" for='postalCode' />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="postalCode" value="#{createCustomerBacking.postalCode}"
+                                                                     size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="postalCode"/>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">
+                                                        <p:outputLabel value="Telefon:" for="phone" />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:inputText id="phone" value="#{createCustomerBacking.phone}"
+                                                                     required="true"
+                                                                     requiredMessage="Telefon boş olmamalı!" size="40"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="phone"/>
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                        </p:outputPanel>
+                                    </div>
+                                </p:tab>
+                                <p:tab id="confirmAndPayTab" title="Onay ve Ödeme">
+                                    <div class="ui-g-12 nospace" style="height: 440px; vertical-align: top;">
+                                        <p:panelGrid id="confirmAndPayGrid" style="width: 100%">
+                                            <p:row style="height: 120px; vertical-align: top;">
+                                                <p:column style="width: 60%;">
+                                                    <p:panelGrid>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold; width: 40%;">Müşteri No:</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.customerId}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Ad:</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.firstName}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Soyad:</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.lastName}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">E-mail:</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.email}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Adres 1 :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.address}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Adres 2 :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.address2}</p:column>
+                                                        </p:row>
+                                                    </p:panelGrid> 
+                                                </p:column>
+                                                <p:column style="width: 40%;">
+                                                    <p:panelGrid>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Ülke :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.city.country.country}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">İl :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.city.city}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">İlçe :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.district}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Posta Kodu :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.postalCode}</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;">Telefon :</p:column>
+                                                            <p:column>#{rentFilmBacking.customer.address.phone}</p:column>
+                                                        </p:row>
+                                                    </p:panelGrid>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:scrollPanel style="height: 290px; width: 100%; padding: 0px; margin: 0px;" mode="native">
+                                                        <p:panelGrid style="width: 100%;">
+                                                            <f:facet name="header">
+                                                                <p:row>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Açıklama" />
+                                                                    </p:column>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Envanter No" />
+                                                                    </p:column>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Film" />
+                                                                    </p:column>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Miktar" />
+                                                                    </p:column>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Birim Fiyat" />
+                                                                    </p:column>
+                                                                    <p:column style="text-align: left;">
+                                                                        <h:outputText value="Tutar" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                            </f:facet>
+                                                            <ui:repeat value="#{rentFilmBacking.billItemList}" var="billItem" varStatus="status">
+                                                                <p:row>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.itemDescription}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.inventoryId}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.filmTitle}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.amount}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.unitPrice}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{billItem.totalPrice}" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                            </ui:repeat>
+                                                            <f:facet name="footer">
+                                                                <p:row>
+                                                                    <p:column colspan="5" style="text-align: right;">
+                                                                        <h:outputText value="TOPLAM" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText value="#{rentFilmBacking.totalPrice}" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                            </f:facet>
+                                                        </p:panelGrid>
+                                                    </p:scrollPanel>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <p:panelGrid style="width: 100%">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:commandButton value="Kirala" icon="fa fa-upload" style="float: right;"
+                                                                     action="#{rentFilmBacking.rentFilm()}" process="@this"
+                                                                     update="rentFilmPanelGrid"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:tab>
+                            </p:wizard>
+                            <p:panelGrid rendered="#{rentFilmBacking.rental ne null}">
+                                <p:row>
+                                    <p:column>
+                                        <div class="ui-g-12">
+                                            <p:panelGrid id="rentalResultGrid" columns="2" style="font-size: medium;">
+                                                <h:outputLabel value="Kiralama No: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.rental.rentalId}" />
+                                                
+                                                <h:outputLabel value="Envanter No: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.rental.inventory.inventoryId}" />
+
+                                                <h:outputLabel value="Film: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.inventory.film.title}" />
+
+                                                <h:outputLabel value="Müşteri: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.rental.customer.firstName}&#160;#{rentFilmBacking.customer.lastName}" />
+
+                                                <h:outputLabel value="Kiralayan: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.rental.staff.firstName}&#160;#{rentFilmBacking.rental.staff.lastName}" />
+
+                                                <h:outputLabel value="Kiralama Tarihi: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.rental.rentalDate}">
+                                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                                </h:outputText>
+                                                <h:outputLabel value="Teslim Tarihi: " style="font-weight: bold;"/>
+                                                <h:outputText value="#{rentFilmBacking.calculatedReturnDate}">
+                                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                                </h:outputText>
+                                            </p:panelGrid>
+                                        </div>
+                                        <div class="ui-g-12">
+                                            <p:commandButton value="Yazdır" type="button" icon="fa fa-print">
+                                                <p:printer target="rentalResultGrid" />
+                                            </p:commandButton>
+                                        </div>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

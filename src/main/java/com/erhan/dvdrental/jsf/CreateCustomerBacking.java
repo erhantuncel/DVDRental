@@ -34,6 +34,7 @@ public class CreateCustomerBacking implements Serializable {
     
     List<City> cityListBasedOnCountry = new VirtualFlow.ArrayLinkedList<>();
     
+    private Short customerId;
     private String firstName;
     private String lastName;
     private String email;
@@ -70,6 +71,14 @@ public class CreateCustomerBacking implements Serializable {
 
     public void setCityListBasedOnCountry(List<City> cityListBasedOnCountry) {
         this.cityListBasedOnCountry = cityListBasedOnCountry;
+    }
+
+    public Short getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Short customerId) {
+        this.customerId = customerId;
     }
     
     public String getFirstName() {
@@ -177,7 +186,7 @@ public class CreateCustomerBacking implements Serializable {
         customer.setAddress(customerAddress);
         customer.setStore(customerStore);
         customerFacade.create(customer);
-        
+        setCustomerId(customer.getCustomerId());
         return "customers";
     }
 
