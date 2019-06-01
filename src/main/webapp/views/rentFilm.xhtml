@@ -15,7 +15,6 @@
                 <p:panelGrid id="rentFilmPanelGrid" styleClass="ui-noborder" style="width: 100%;">
                     <p:row style="height: 470px; vertical-align: top;">
                         <p:column style="width: 100%;">
-                            <p:importConstants type="com.erhan.dvdrental.jsf.RentFilmBacking" var="rentFilmController" />
                             <p:wizard id="rentWizard" widgetVar="rentWizard" nextLabel="Ödeme" backLabel="Bilgileri Değiştir" 
                                       showStepStatus="false" flowListener="#{rentFilmBacking.onFlow}"
                                       rendered="#{rentFilmBacking.rental eq null}">
