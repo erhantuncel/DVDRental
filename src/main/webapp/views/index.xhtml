@@ -12,6 +12,7 @@
     <ui:define name="mainContent">
         <div class="ui-g-12 nospace">
             <div class="ui-g-2">
+                <p:growl id="growl" for="actionResult" showDetail="false" keepAlive="true"/>
                 <p:panelGrid styleClass="ui-noborder" columns="1" style="width: 100%; text-align: center;">
                     <p:button icon="fa fa-video-camera" value="Film&#10;Ekle"
                               style="white-space: pre; width: 130px; height: 120px; font-size: 16px !important;"
@@ -20,12 +21,15 @@
                               style="width: 130px; height: 120px; font-size: 16px !important;"
                               outcome="/views/createCustomer"/>
                     <p:commandButton icon="fa fa-upload" value="Film Kirala" 
-                                     oncomplete="PF('rentFilmDialog').show()"
-                              style="width: 130px; height: 120px; font-size: 16px !important;">
+                                     oncomplete="PF('rentFilmDialog').show()" 
+                                     style="width: 130px; height: 120px; font-size: 16px !important;">
                         <p:resetInput target="rentFilmForm" />
                     </p:commandButton>
-                    <p:button icon="fa fa-download" value="Film Teslim Al"
-                              style="width: 130px; height: 120px; font-size: 16px !important;" />
+                    <p:commandButton icon="fa fa-download" value="Film Teslim Al" 
+                                     style="width: 130px; height: 120px; font-size: 16px !important;"
+                                     oncomplete="PF('returnFilmDialog').show()">
+                        <p:resetInput target="returnFilmForm" />
+                    </p:commandButton>
                 </p:panelGrid>
             </div>
 
@@ -35,8 +39,8 @@
                         <p:tab id="overdueRentalsTab" title="Kira Süresi Bitenler">
                             <p:dataTable id="overdueRentals" value="#{mainPageBacking.overdueRentals}" var="rental" 
                                          widgetVar="overdueRentalTable" rowKey="#{rental.rentalId}" emptyMessage="Kiralama bulunamadı"
-                                         paginator="true" paginatorPosition="bottom" rows="10" 
-                                         sortBy="#{rental.rentalDate}"
+                                         paginator="true" paginatorPosition="bottom" rows="15" 
+                                         sortBy="#{rental.rentalDate}" sortOrder="descending"
                                          >
                                 <f:facet name="header">
                                     <p:outputPanel style="text-align: right;">
@@ -72,10 +76,6 @@
 
                                 <p:column headerText="Personel" style="width: 14%;">
                                     <h:outputText value="#{rental.staff.firstName}&#160;#{rental.staff.lastName}" />
-                                </p:column>
-
-                                <p:column headerText="İşlemler" style="width: 12%;">
-                                    <p:commandButton value="Teslim Al" icon="fa fa-download" />
                                 </p:column>
                             </p:dataTable>
                         </p:tab>
@@ -118,6 +118,7 @@
             </div>
         </div>
         <ui:include src="rentFilm.xhtml" />
+        <ui:include src="returnFilm.xhtml" />
     </ui:define>
 
 </ui:composition>

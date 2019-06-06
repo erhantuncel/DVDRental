@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.SelectEvent;
 
 @Named("rentFilmBacking")
 @ViewScoped
@@ -166,14 +165,23 @@ public class RentFilmBacking implements Serializable {
         this.calculatedReturnDate = calculatedReturnDate;
     }
 
+    public Staff findCurrentLoggedInStaff() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        return (Staff) sessionMap.get("Staff");
+    }
+
     public void hideRentFilmDialog() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
     }
 
     public void findInventory() {
         System.out.println("findInventory method is invoked.");
-        Inventory foundInventory = inventoryFacade.find(Integer.valueOf(inventoryId));
-        if (foundInventory != null) {
+//        Inventory foundInventory = inventoryFacade.find(Integer.valueOf(inventoryId));
+        Staff currentStaff = findCurrentLoggedInStaff();
+        List<Inventory> foundInventoryList = inventoryFacade.findByIdAndStore(Integer.valueOf(inventoryId), currentStaff.getStoreId());
+        if (foundInventoryList != null && foundInventoryList.size() > 0) {
+            Inventory foundInventory = foundInventoryList.get(0);
             if (isInventoryInStock(foundInventory)) {
                 setInventory(foundInventory);
                 setInventoryId(foundInventory.getInventoryId() + " - " + foundInventory.getFilm().getTitle());
@@ -186,7 +194,7 @@ public class RentFilmBacking implements Serializable {
             setInventoryId("Bu envanter numarası mevcut değil.");
         }
     }
-    
+
     public boolean isInventoryInStock(Inventory inventoryForCheck) {
         List<Rental> rentalListForInventory = rentalFacade.findByInventory(inventoryForCheck);
         boolean isInStock = true;
@@ -214,12 +222,12 @@ public class RentFilmBacking implements Serializable {
         System.out.println("onFlow method is invoked.");
         billItemList.clear();
         billItemList.add(new BillItem(
-                        BillItem.ItemType.RENTAL,
-                        inventory.getInventoryId(),
-                        inventory.getFilm().getTitle(),
-                        1,
-                        inventory.getFilm().getRentalRate()
-                ));
+                BillItem.ItemType.RENTAL,
+                inventory.getInventoryId(),
+                inventory.getFilm().getTitle(),
+                1,
+                inventory.getFilm().getRentalRate()
+        ));
         if (customerStatus.equals("new")) {
             customer = new Customer();
             customer.setFirstName(createCustomerBacking.getFirstName());
@@ -234,22 +242,17 @@ public class RentFilmBacking implements Serializable {
             customerAddress.setPhone(createCustomerBacking.getPhone());
             customer.setAddress(customerAddress);
         } else {
-            List<Rental> overdueRentalsForCustomer = findOverdueRentalsForCustomer();
+            List<Rental> overdueRentalsForCustomer = findOverdueRentalsForCustomer(this.customer);
             populateBillItemList(overdueRentalsForCustomer, billItemList);
         }
 
-        BigDecimal totalBillPrice = BigDecimal.ZERO;
-        if (billItemList != null && billItemList.size() > 0) {
-            for (BillItem billItem : billItemList) {
-                totalBillPrice = totalBillPrice.add(billItem.getTotalPrice());
-            }
-        }
+        BigDecimal totalBillPrice = calcuateTotalPrice(billItemList);
         setTotalPrice(totalBillPrice);
 
         return flowEvent.getNewStep();
     }
 
-    public List<Rental> findOverdueRentalsForCustomer() {
+    public List<Rental> findOverdueRentalsForCustomer(Customer customer) {
         List<Rental> rentalListreturnDateIsNullByCustomer = rentalFacade.findReturnDateIsNullByCustomer(customer);
         List<Rental> overdueRentalList = new ArrayList<>();
         if (rentalListreturnDateIsNullByCustomer != null && rentalListreturnDateIsNullByCustomer.size() > 0) {
@@ -269,12 +272,13 @@ public class RentFilmBacking implements Serializable {
         if (overdueRentalList != null && overdueRentalList.size() > 0) {
             for (Rental overdueRental : overdueRentalList) {
                 long days = TimeUnit.DAYS.convert((new Date().getTime() - overdueRental.getRentalDate().getTime()), TimeUnit.MILLISECONDS);
+                long overdueDays = days - (long) overdueRental.getInventory().getFilm().getRentalDuration();
                 if (days < overdueRental.getInventory().getFilm().getRentalDuration() * 2) {
                     billItemListToPopulate.add(new BillItem(
                             BillItem.ItemType.OVERDUE,
                             overdueRental.getInventory().getInventoryId(),
                             overdueRental.getInventory().getFilm().getTitle(),
-                            Integer.valueOf(String.valueOf(days)),
+                            Integer.valueOf(String.valueOf(overdueDays)),
                             new BigDecimal(1)
                     ));
                 } else {
@@ -282,7 +286,7 @@ public class RentFilmBacking implements Serializable {
                             BillItem.ItemType.OVERDUE,
                             overdueRental.getInventory().getInventoryId(),
                             overdueRental.getInventory().getFilm().getTitle(),
-                            Integer.valueOf(String.valueOf(days)),
+                            Integer.valueOf(String.valueOf(overdueDays)),
                             new BigDecimal(1)
                     ));
                     billItemListToPopulate.add(new BillItem(
@@ -297,11 +301,20 @@ public class RentFilmBacking implements Serializable {
         }
     }
 
+    public BigDecimal calcuateTotalPrice(List<BillItem> billItems) {
+        BigDecimal totalBillPrice = BigDecimal.ZERO;
+        if (billItems != null && billItems.size() > 0) {
+            for (BillItem billItem : billItems) {
+                totalBillPrice = totalBillPrice.add(billItem.getTotalPrice());
+            }
+        }
+        return totalBillPrice;
+    }
+
     public void rentFilm() {
         System.out.println("rentFilm method is invoked.");
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        Staff currentStaff = (Staff) sessionMap.get("Staff");
+        
+        Staff currentStaff = findCurrentLoggedInStaff();
 
         if (customerStatus.equals("new")) {
             createCustomerBacking.createCustomer();

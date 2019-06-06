@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <p:dialog id="returnFilmDialog" widgetVar="returnFilmDialog" appendTo="@(body)"
+                  modal="true" resizable="false" header="Film Teslim Alma"
+                  width="800" height="480" closable="true" dynamic="true">
+            <p:ajax event="close" listener="#{returnFilmBacking.hideReturnFilmDialog()}" />
+            <h:form id="returnFilmForm">
+                <p:panelGrid style="width: 100%; margin: 0px; padding: 0px; vertical-align: top;" 
+                             styleClass="ui-noborder">
+                    <p:row rendered="#{not returnFilmBacking.retunRentalSuccessfull}">
+                        <p:column>
+                            <div class="ui-g-12 nospace" style="width: 100%; height: 40px; vertical-align: top;">
+                                <p:panelGrid id="searchRentalGrid" columns="3" styleClass="ui-noborder">
+                                    <p:outputLabel value="Kiralama" for="rentalId" style="font-weight: bold;" />
+                                    <p:inputText id="rentalId" value="#{returnFilmBacking.rentalId}"/>
+                                    <p:commandButton value="Ara" action="#{returnFilmBacking.searchRentalById()}" update="returnFilmForm" />
+                                </p:panelGrid>
+                            </div>
+                            <div class="ui-g-12 nospace" style="width: 100%; height: 80px; vertical-align: top;">
+                                <p:panelGrid id="returnFilmInformationGrid" rendered="#{returnFilmBacking.rentalId ne null}"
+                                             style="width: 100%; margin: 0px; padding: 0px;" styleClass="ui-noborder">
+                                    <p:row rendered="#{returnFilmBacking.rental eq null}">
+                                        <p:column colspan="2">
+                                            <h:outputText value="Aradığınız kiralama mevcut değil!" style="font-weight: bold; color: red;" /> 
+                                        </p:column>
+                                    </p:row>
+                                    <p:row style="vertical-align: top;" rendered="#{returnFilmBacking.rental ne null}">
+                                        <p:column style="width: 50%; margin: 0px; padding: 0px;">
+                                            <p:panelGrid style="width: 100%;">
+                                                <p:row>
+                                                    <p:column style="font-weight: bold; width: 30%;">Kiralama No:</p:column>
+                                                    <p:column>#{returnFilmBacking.rental.rentalId}</p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">Şube :</p:column>
+                                                    <p:column styleClass="#{(sessionScope.Staff.storeId ne returnFilmBacking.rental.inventory.store) ? 'redText' : '' }">
+                                                        #{returnFilmBacking.rental.inventory.store.address.city.city}-#{returnFilmBacking.rental.inventory.store.address.city.country.country}&#160;(#{returnFilmBacking.rental.inventory.store.address.district})
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">Film:</p:column>
+                                                    <p:column>#{returnFilmBacking.rental.inventory.film.title}(#{returnFilmBacking.rental.inventory.film.rentalDuration} gün)</p:column>
+                                                </p:row>
+                                            </p:panelGrid> 
+                                        </p:column>
+                                        <p:column style="width: 50%; margin: 0px; padding: 0px;">
+                                            <p:panelGrid style="width: 100%;">
+                                                <p:row>
+                                                    <p:column style="font-weight: bold; width: 30%;">Müşteri:</p:column>
+                                                    <p:column>#{returnFilmBacking.rental.customer.firstName}&#160;#{returnFilmBacking.rental.customer.lastName}</p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">Kiralama Tarihi:</p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{returnFilmBacking.rental.rentalDate}">
+                                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="font-weight: bold;">Geçen Süre:</p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{returnFilmBacking.rentDuration}" 
+                                                                      styleClass="#{(returnFilmBacking.rentDuration > returnFilmBacking.rental.inventory.film.rentalDuration) ? 'redText' : ''}" />
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </div>
+                            <div class="ui-g-12 nospace" style="width: 100%; height: 320px; vertical-align: top;">
+                                <p:scrollPanel style="height: 320px; width: 100%; padding: 0px; margin: 0px; border: none;" 
+                                               mode="native">
+                                    <p:panelGrid style="width: 100%;" rendered="#{returnFilmBacking.rental ne null}" 
+                                                 styleClass="ui-noborder">
+                                        <f:facet name="header">
+                                            <p:row>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Açıklama" />
+                                                </p:column>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Envanter No" />
+                                                </p:column>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Film" />
+                                                </p:column>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Miktar" />
+                                                </p:column>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Birim Fiyat" />
+                                                </p:column>
+                                                <p:column style="text-align: left;">
+                                                    <h:outputText value="Tutar" />
+                                                </p:column>
+                                            </p:row>
+                                        </f:facet>
+                                        <c:choose>
+                                            <c:when test="#{returnFilmBacking.billItems.size() > 0}">
+                                                <ui:repeat value="#{returnFilmBacking.billItems}" var="billItem" varStatus="status">
+                                                    <p:row>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.itemDescription}" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.inventoryId}" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.filmTitle}" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.amount}" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.unitPrice}" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{billItem.totalPrice}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                </ui:repeat>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p:row>
+                                                    <p:column colspan="5">
+                                                        <h:outputText value="Ödeme bulunamadı" />
+                                                    </p:column>
+                                                </p:row>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <f:facet name="footer">
+                                            <p:row>
+                                                <p:column colspan="5" style="text-align: right;">
+                                                    <h:outputText value="TOPLAM" />
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{returnFilmBacking.totalPrice}" />
+                                                </p:column>
+                                            </p:row>
+                                        </f:facet>
+                                    </p:panelGrid>
+                                </p:scrollPanel>
+                            </div>
+
+                            <div class="ui-g-12 nospace" style="width: 100%; height: 30px; vertical-align: top;">
+                                <p:commandButton value="Teslim Al" icon="fa fa-download" style="float: right;"
+                                                 action="#{returnFilmBacking.returnFilm()}" process="@this"
+                                                 update="returnFilmForm"
+                                                 rendered="#{returnFilmBacking.rental ne null}"
+                                                 disabled="#{sessionScope.Staff.storeId ne returnFilmBacking.rental.inventory.store}"/>
+                            </div>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

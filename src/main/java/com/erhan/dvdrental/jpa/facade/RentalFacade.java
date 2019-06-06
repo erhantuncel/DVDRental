@@ -71,6 +71,17 @@ public class RentalFacade extends AbstractFacade<Rental> {
         return typedQuery.getResultList();
     }
     
+    public List<Rental> findReturnDateIsNullById(Integer rentalId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Rental> cq = cb.createQuery(Rental.class);
+        Root<Rental> rental = cq.from(Rental.class);
+        Predicate predicateForId = cb.equal(rental.get("rentalId"), rentalId);
+        Predicate predicateForReturnDateIsNull = cb.isNull(rental.get("returnDate"));
+        cq.select(rental).where(predicateForId, predicateForReturnDateIsNull);
+        TypedQuery<Rental> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
+    }
+    
     public List<Rental> findLastSixtyRentals() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Rental> query = criteriaBuilder.createQuery(Rental.class);
