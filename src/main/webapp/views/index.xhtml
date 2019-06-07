@@ -55,6 +55,11 @@
                                 <p:column headerText="Film" filterBy="#{rental.inventory.film.title}" filterStyle="display:none;">
                                     <h:outputText value="#{rental.inventory.film.title}" />
                                 </p:column>
+                                
+                                <p:column headerText="Envanter" filterBy="#{rental.inventory.inventoryId}" filterStyle="display:none;"
+                                          style="width: 9%;">
+                                    <h:outputText value="#{rental.inventory.inventoryId}" />
+                                </p:column>
 
                                 <p:column headerText="Müşteri" filterBy="#{rental.customer.firstName}" filterStyle="display:none;">
                                     <h:outputText value="#{rental.customer.firstName}&#160;#{rental.customer.lastName}" />
@@ -97,6 +102,11 @@
                                 <p:column headerText="Film" filterBy="#{rentalInLast.inventory.film.title}" filterStyle="display:none;">
                                     <h:outputText value="#{rentalInLast.inventory.film.title}" />
                                 </p:column>
+                                
+                                <p:column headerText="Envanter" filterBy="#{rentalInLast.inventory.inventoryId}" filterStyle="display:none;"
+                                          style="width: 8%">
+                                    <h:outputText value="#{rentalInLast.inventory.inventoryId}" />
+                                </p:column>
 
                                 <p:column headerText="Müşteri" filterBy="#{rentalInLast.customer.firstName}" filterStyle="display:none;">
                                     <h:outputText value="#{rentalInLast.customer.firstName}&#160;#{rentalInLast.customer.lastName}" />
@@ -106,8 +116,14 @@
                                     <h:outputText value="#{rentalInLast.inventory.film.rentalDuration} gün" />
                                 </p:column>
                                 
-                                <p:column headerText="Tarih" style="width: 14%">
+                                <p:column headerText="Kiralama Tarihi" style="width: 14%">
                                     <h:outputText value="#{rentalInLast.rentalDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Teslim Tarihi" style="width: 14%">
+                                    <h:outputText value="#{rentalInLast.returnDate}" >
                                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
                                     </h:outputText>
                                 </p:column>

@@ -97,7 +97,10 @@ public class MainPageBacking implements Serializable {
     }
     
     public List<Rental> findLastSixtyRentals() {
-        List<Rental> lastSixtyRentalList = rentalFacade.findLastSixtyRentals();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Staff currentStaff = (Staff) sessionMap.get("Staff");
+        List<Rental> lastSixtyRentalList = rentalFacade.findLastSixtyRentalsByStore(currentStaff.getStoreId());
         return lastSixtyRentalList;
     }
 }

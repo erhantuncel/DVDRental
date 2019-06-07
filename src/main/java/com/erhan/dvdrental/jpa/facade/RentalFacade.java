@@ -82,13 +82,14 @@ public class RentalFacade extends AbstractFacade<Rental> {
         return typedQuery.getResultList();
     }
     
-    public List<Rental> findLastSixtyRentals() {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Rental> query = criteriaBuilder.createQuery(Rental.class);
-        Root<Rental> root = query.from(Rental.class);
-        query.select(root);
-        query.orderBy(criteriaBuilder.desc(root.get("rentalDate")));
-        TypedQuery<Rental> q = em.createQuery(query);
+    public List<Rental> findLastSixtyRentalsByStore(Store store) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Rental> cq = cb.createQuery(Rental.class);
+        Root<Rental> rental = cq.from(Rental.class);
+        Join<Rental, Inventory> inventory = rental.join(Rental_.inventory);
+        cq.select(rental).where(cb.equal(inventory.get(Inventory_.store), store));
+        cq.orderBy(cb.desc(rental.get("rentalDate")));
+        TypedQuery<Rental> q = em.createQuery(cq);
         q.setMaxResults(60);
         return q.getResultList();
     }
