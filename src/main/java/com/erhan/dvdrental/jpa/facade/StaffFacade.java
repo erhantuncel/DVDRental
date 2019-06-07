@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaQuery;
 
 @Stateless
 public class StaffFacade extends AbstractFacade<Staff> {
@@ -49,6 +50,18 @@ public class StaffFacade extends AbstractFacade<Staff> {
             em.merge(userGroup);
             em.merge(entity);
         }
+    }
+    
+    @Override
+    public List<Staff> findAll() {
+        CriteriaQuery<Staff> cq = getEntityManager().getCriteriaBuilder().createQuery(Staff.class);
+        cq.select(cq.from(Staff.class));
+        List<Staff> allStaffList = getEntityManager().createQuery(cq).getResultList();
+        for(Staff staff : allStaffList) {
+            UserGroup userGroupForStaff = em.find(UserGroup.class, staff.getUsername());
+            staff.setUserGroup(userGroupForStaff.getGroupname());
+        }
+        return allStaffList;
     }
     
     public List<Staff> findByFirstName(String firstName) {

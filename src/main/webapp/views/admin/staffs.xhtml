@@ -40,7 +40,8 @@
                             <p:inputText id="globalFilter" onkeyup="PF('staffsTable').filter()" placeholder="Ara" />
                         </p:outputPanel>
                     </f:facet>
-                    <p:column headerText="Personel No" filterBy="#{staff.staffId}" filterStyle="display:none;">
+                    <p:column headerText="Personel No" filterBy="#{staff.staffId}" filterStyle="display:none;"
+                              style="width: 8%;">
                         <h:outputText value="#{staff.staffId}" />
                     </p:column>
 
@@ -52,20 +53,25 @@
                         <h:outputText value="#{staff.lastName}" />
                     </p:column>
 
-                    <p:column headerText="E-mail" filterBy="#{staff.email}" filterStyle="display:none;">
-                        <h:outputText value="#{staff.email}" />
-                    </p:column>
-
                     <p:column headerText="Kullanıcı Adı" filterBy="#{staff.username}" filterStyle="display:none;">
                         <h:outputText value="#{staff.username}" />
                     </p:column>
+                    
+                    <p:column headerText="Şube" filterBy="#{staff.storeId.address.city.city}" filterStyle="display:none;">
+                        <h:outputText value="#{staff.storeId.address.city.city}-#{staff.storeId.address.city.country.country}&#160;(#{staff.storeId.address.district})" />
+                    </p:column>
+                    
+                    <p:column headerText="Pozisyon" filterBy="#{staff.userGroup}" filterStyle="display:none;"
+                              style="width: 8%;">
+                        <h:outputText value="#{staff.userGroup}" />
+                    </p:column>
 
-                    <p:column headerText="Son Güncelleme">
+                    <p:column headerText="Son Güncelleme" style="width: 12%;">
                         <h:outputText value="#{staff.lastUpdate}">
                             <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="İşlemler" style="text-align: center;">
+                    <p:column headerText="İşlemler" style="text-align: center; width: 8%;">
                         <p:commandButton icon="fa fa-search" update="staffDetailForm" 
                                          oncomplete="PF('staffDetailDialog').show()"
                                          title="Personel Detayları">
