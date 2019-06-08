@@ -9,7 +9,7 @@
     <ui:composition>
         <p:dialog id="updateStaffDialog" widgetVar="updateStaffDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Personel Bilgileri Güncelleme"
-                  width="750" height="390" closable="false">
+                  width="750" height="415" closable="false">
             <p:ajax event="close" listener="#{updateStaffBacking.hideUpdateStaffDialog()}" />
             <h:form id="updateStaffForm">
                 <p:panelGrid id="updateStaffPanelGrid" styleClass="ui-noborder" style="width: 100%;">
@@ -85,7 +85,7 @@
                                     <p:column>
                                         <p:selectOneMenu id="country" value="#{updateStaffBacking.selectedStaff.address.city.country}"
                                                          valueChangeListener="#{updateStaffBacking.countrySelectOneMenuValueChanged}"
-                                                         autoWidth="false" style="width: 83%;"
+                                                         autoWidth="false" style="width: 137px;"
                                                          converter="countryConverter"
                                                          required="true" 
                                                          requiredMessage="Ülke seçmelisiniz!">
@@ -106,7 +106,7 @@
                                     </p:column>
                                     <p:column>
                                         <p:selectOneMenu id="city" value="#{updateStaffBacking.selectedStaff.address.city}"
-                                                         autoWidth="false" style="width: 83%;"
+                                                         autoWidth="false" style="width: 137px;"
                                                          converter="cityConverter"
                                                          required="true"
                                                          requiredMessage="İl seçmelisiniz!">
@@ -152,6 +152,27 @@
                                     </p:column>
                                     <p:column>
                                         <p:message for="phone" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">
+                                        <p:outputLabel value="Şube:" for="store" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="store" value="#{updateStaffBacking.selectedStaff.storeId}"
+                                                         autoWidth="false" style="width: 137px;"
+                                                         converter="storeConverter"
+                                                         required="true"
+                                                         requiredMessage="Şube seçmelisiniz!">
+                                            <f:selectItem itemLabel="Şube seçiniz" itemValue="" />
+                                            <f:selectItems value="#{storeController.storeList}" var="storeItem"
+                                                           itemValue="#{storeItem}" 
+                                                           itemLabel="#{storeItem.address.city.city}-#{storeItem.address.city.country.country}
+                                                           (#{storeItem.address.district})"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="store" />
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>
