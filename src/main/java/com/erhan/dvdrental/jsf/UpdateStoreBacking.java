@@ -128,8 +128,12 @@ public class UpdateStoreBacking implements Serializable {
         Staff oldManager = selectedStore.getManagerStaff();
         
         selectedManager.setUserGroup(UserGroup.ADMINISTRATOR_GROUP);
+        selectedManager.setStoreId(selectedStore);
+        selectedManager.setStoreToManage(selectedStore);
         staffFacade.edit(selectedManager);
+        
         selectedStore.setManagerStaff(selectedManager);
+        selectedStore.getStaffList().add(selectedManager);
         storeFacade.edit(selectedStore);
         
         oldManager.setStoreToManage(null);
