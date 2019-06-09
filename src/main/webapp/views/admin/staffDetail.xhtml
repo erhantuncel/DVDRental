@@ -71,7 +71,7 @@
                                     <p:column style="font-weight: bold;">Son Güncelleme:</p:column>
                                     <p:column>
                                         <h:outputText value="#{updateStaffBacking.selectedStaff.lastUpdate}">
-                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" locale="tr_TR" timeZone="Turkey" />
                                         </h:outputText>
                                     </p:column>
                                 </p:row>
