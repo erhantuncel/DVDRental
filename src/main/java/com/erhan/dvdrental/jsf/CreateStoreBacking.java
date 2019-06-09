@@ -234,6 +234,6 @@ public class CreateStoreBacking implements Serializable {
         managerStaff.setUserGroup(UserGroup.ADMINISTRATOR_GROUP);
         staffFacade.edit(managerStaff);
         
-        return "stores";
+        return "stores?faces-redirect=true";
     }
 }
