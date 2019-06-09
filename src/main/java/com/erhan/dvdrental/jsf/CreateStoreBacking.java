@@ -229,9 +229,11 @@ public class CreateStoreBacking implements Serializable {
         Store newStore = new Store(new Date());
         newStore.setAddress(storeAddress);
         newStore.setManagerStaff(managerStaff);
+        newStore.getStaffList().add(managerStaff);
         storeFacade.create(newStore);
         
         managerStaff.setUserGroup(UserGroup.ADMINISTRATOR_GROUP);
+        managerStaff.setStoreId(newStore);
         staffFacade.edit(managerStaff);
         
         return "stores?faces-redirect=true";

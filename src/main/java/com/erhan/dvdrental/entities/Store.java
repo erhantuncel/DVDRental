@@ -54,7 +54,7 @@ public class Store implements Serializable {
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "storeId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "storeId", fetch = FetchType.LAZY)
     private List<Staff> staffList = new ArrayList<>();
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
