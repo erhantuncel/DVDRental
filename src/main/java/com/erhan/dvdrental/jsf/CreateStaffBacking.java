@@ -258,15 +258,6 @@ public class CreateStaffBacking implements Serializable {
     }
     
     public String createStaff() {
-//        System.out.println("firstName = " + getFirstName());
-//        System.out.println("lastName = " + getLastName());
-//        System.out.println("Country = " + getCountry().getCountry());
-//        System.out.println("City = " + getCity().getCity());
-//        System.out.println("Username = " + getUserName());
-//        System.out.println("Password 1 = " + getPassword1());
-//        System.out.println("Password 2 = " + getPassword2());
-//        System.out.println("Picture lenght = " + getPicture().length);
-
         System.out.println("Address creating is started.");
         Address address = new Address(getAddress1(), getDistrict(), getPhone(), new Date());
         address.setAddress2(getAddress2());
@@ -287,6 +278,6 @@ public class CreateStaffBacking implements Serializable {
         staff.setStoreId(store);
         staff.setAddress(address);
         getStaffFacade().create(staff);        
-        return "staffs";
+        return "staffs?faces-redirect=true";
     }
 }
