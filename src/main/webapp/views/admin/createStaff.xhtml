@@ -171,8 +171,7 @@
                                         <p:outputLabel value="Şube:" for="store" />
                                     </p:column>
                                     <p:column id="storeColumn">
-                                        <p:inputText id="store" value="#{createStaffBacking.store.address.address}
-                                                       &#8208;#{createStaffBacking.store.address.city.city}"
+                                        <p:inputText id="store" value="#{createStaffBacking.storeString}"
                                                        required="true" readonly="true"
                                                      requiredMessage="Şube boş olmamalı!" size="25"/>&#160;
                                         <p:commandButton id="showStoresLink" icon="fa fa-search" immediate="true"

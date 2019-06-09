@@ -55,6 +55,7 @@ public class CreateStaffBacking implements Serializable {
     private String password2;
     private byte[] picture;
     private Store store;
+    private String storeString;
     
     
     
@@ -204,10 +205,18 @@ public class CreateStaffBacking implements Serializable {
     public void setStore(Store store) {
         this.store = store;
     }
+
+    public String getStoreString() {
+        return storeString;
+    }
+
+    public void setStoreString(String storeString) {
+        this.storeString = storeString;
+    }
     
     public void countrySelectOneMenuValueChanged(ValueChangeEvent event) {
-        Country country = (Country) event.getNewValue();
-        setCityListBasedOnCountry(country.getCityList());
+        Country selectedCountry = (Country) event.getNewValue();
+        setCityListBasedOnCountry(selectedCountry.getCityList());
     }
     
     public void fileUploadListener(FileUploadEvent event) {
@@ -227,7 +236,7 @@ public class CreateStaffBacking implements Serializable {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("modal", true);
-        options.put("width", 500);
+        options.put("width", 600);
         options.put("height", 400);
         options.put("contentHeight", "100%");
         options.put("contentWidth", "100%");
@@ -243,6 +252,9 @@ public class CreateStaffBacking implements Serializable {
     public void handleReturnStore(SelectEvent event) {
         Store selectedStore = (Store) event.getObject();
         setStore(selectedStore);
+        setStoreString(selectedStore.getAddress().getCity().getCity() 
+                + "-" + selectedStore.getAddress().getCity().getCountry().getCountry()
+                + " (" + selectedStore.getAddress().getDistrict() + ")");
     }
     
     public String createStaff() {
