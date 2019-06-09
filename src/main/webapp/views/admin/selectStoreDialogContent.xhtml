@@ -12,16 +12,19 @@
                 <p:row>
                     <p:column>
                         <p:dataTable id="storeList" value="#{storeController.storeList}" var="store">
-                            <p:column headerText="Şube No" style="width: 10%; text-align: center;">
+                            <p:column headerText="Şube No" style="width: 8%; text-align: center;">
                                 <h:outputText value="#{store.storeId}" />
                             </p:column>
-                            <p:column headerText="Adres" style="width: 40%;">
+                            <p:column headerText="Adres" style="width: 34%;">
                                 <h:outputText value="#{store.address.address}" />
                             </p:column>
-                            <p:column headerText="Şehir">
+                            <p:column headerText="Semt" style="width: 15%;">
+                                <h:outputText value="#{store.address.district}" />
+                            </p:column>
+                            <p:column headerText="Şehir" style="width: 15%;">
                                 <h:outputText value="#{store.address.city.city}" />
                             </p:column>
-                            <p:column headerText="Ülke">
+                            <p:column headerText="Ülke" style="width: 15%;">
                                 <h:outputText value="#{store.address.city.country.country}" />
                             </p:column>
                             <p:column style="width: 10%; text-align: center;">
