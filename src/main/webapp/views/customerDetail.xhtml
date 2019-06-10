@@ -9,7 +9,7 @@
     <ui:composition>
         <p:dialog id="customerDetailDialog" widgetVar="customerDetailDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Müşteri Bilgileri"
-                  width="800" height="490" closable="true">
+                  width="820" height="490" closable="true">
             <h:form id="customerDetailForm">
                 <p:panelGrid id="customerDetail" styleClass="ui-noborder" style="width: 100%;">
                     <p:row>
@@ -105,6 +105,9 @@
                                 <p:column headerText="Film" style="width: 30%;">
                                     <h:outputText value="#{rental.inventory.film.title}" />
                                 </p:column>
+                                <p:column headerText="Envanter" style="width: 9%;">
+                                    <h:outputText value="#{rental.inventory.inventoryId}" />
+                                </p:column>
                                 <p:column headerText="Şube">
                                     <h:outputText value="#{rental.inventory.store.address.city.city}" />
                                 </p:column>
@@ -114,12 +117,12 @@
                                 <p:column headerText="Ücret" style="width: 7%;">
                                     <h:outputText value="#{rental.paymentList[0].amount}" />
                                 </p:column>
-                                <p:column headerText="Kiralama Tarih">
+                                <p:column headerText="Kiralama Tarih" style="width: 15%;">
                                     <h:outputText value="#{rental.rentalDate}">
                                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="tr_TR" timeZone="Turkey"/>
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="Teslim Tarihi">
+                                <p:column headerText="Teslim Tarihi" style="width: 15%;">
                                     <h:outputText value="#{rental.returnDate}">
                                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="tr_TR" timeZone="Turkey"/>
                                     </h:outputText>
