@@ -10,6 +10,7 @@
         <p:dialog id="customerDetailDialog" widgetVar="customerDetailDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Müşteri Bilgileri"
                   width="820" height="490" closable="true">
+            <p:ajax event="close" listener="#{updateCustomerBacking.handleOnHideCustomerDetailDialog()}" />
             <h:form id="customerDetailForm">
                 <p:panelGrid id="customerDetail" styleClass="ui-noborder" style="width: 100%;">
                     <p:row>
@@ -98,7 +99,7 @@
                     <p:row>
                         <p:column colspan="2">
                             <p:dataTable id="rentalList" value="#{updateCustomerBacking.selectedCustomer.rentalList}" var="rental"
-                                         rowKey="#{rental.rentalId}" 
+                                         rowKey="#{rental.rentalId}" widgetVar="customerRentalTable" 
                                          paginator="true" paginatorPosition="bottom" rows="10"
                                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="10,15">

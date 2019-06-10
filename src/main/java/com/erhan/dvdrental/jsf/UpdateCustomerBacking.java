@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.component.datatable.DataTable;
 
 @Named("updateCustomerBacking")
 @ViewScoped
@@ -59,6 +62,12 @@ public class UpdateCustomerBacking implements Serializable {
     
     public void hideUpdateCustomerDialog() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("customers.xhtml");
+    }
+    
+    public void handleOnHideCustomerDetailDialog() {
+        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+        DataTable rentalListTable = (DataTable) viewRoot.findComponent("customerDetailForm:rentalList");
+        rentalListTable.reset();
     }
     
     public void updateCustomer() {
