@@ -187,7 +187,7 @@ public class CreateCustomerBacking implements Serializable {
         customer.setStore(customerStore);
         customerFacade.create(customer);
         setCustomerId(customer.getCustomerId());
-        return "customers";
+        return "customers?faces-redirect=true";
     }
 
 }
