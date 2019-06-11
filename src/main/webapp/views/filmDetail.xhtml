@@ -98,20 +98,38 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="2" style="font-weight: bold;">
-                            Envanter Bilgileri
+                            <p:panelGrid style="margin-top: 5px;">
+                                <p:row>
+                                    <p:column style="text-align: left;">
+                                        Envanter Bilgileri:
+                                    </p:column>
+                                    <p:column style="text-align: right;">
+                                        <p:selectOneMenu value="#{filmDetailBacking.selectedStore}" converter="storeConverter" 
+                                                         valueChangeListener="#{filmDetailBacking.handleStoreValueChanged}">
+                                            <p:ajax update="inventoryInfoTable" />
+                                            <f:selectItems value="#{filmDetailBacking.storeListForFilm}" var="store"
+                                                           itemLabel="#{store.address.city.city}-#{store.address.city.country.country} (#{store.address.district})"
+                                                           itemValue="#{store}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column colspan="2">
-                            <p:dataTable value="#{filmDetailBacking.inventoryInfoList}" var="inventoryInfo">
+                            <p:dataTable id="inventoryInfoTable" value="#{filmDetailBacking.inventoryInfoListWithAvailability}" 
+                                         var="inventoryInfo">
+                                <p:column headerText="Envanter No" style="width: 15%;">
+                                    <h:outputText value="#{inventoryInfo.inventory.inventoryId}" />
+                                </p:column>
                                 <p:column headerText="Şube">
-                                    <h:outputText value="#{inventoryInfo.store.address.city.city}-#{inventoryInfo.store.address.city.country.country} (#{inventoryInfo.store.address.district})" />
+                                    <h:outputText value="#{inventoryInfo.inventory.store.address.city.city}-#{inventoryInfo.inventory.store.address.city.country.country}
+                                                  (#{inventoryInfo.inventory.store.address.district})" />
                                 </p:column>
-                                <p:column headerText="Toplam">
-                                    <h:outputText value="#{inventoryInfo.totalFilmCount}" />
-                                </p:column>
-                                <p:column headerText="Kiralanabilir">
-                                    <h:outputText value="#{inventoryInfo.availableForRentCount}" />
+                                <p:column headerText="Kiralanabilir" style="width: 30%;">
+                                    <h:outputText value="#{inventoryInfo.availableForRent ? 'Evet' : 'Hayır'}" 
+                                                  styleClass="#{inventoryInfo.availableForRent ? '' : 'redText'}"/>
                                 </p:column>
                             </p:dataTable>
                         </p:column>

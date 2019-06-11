@@ -35,10 +35,6 @@
                                               rendered="#{sessionScope.userRole eq 'Administrator'}"/>
                                     <p:button value="Müşteri" icon="fa fa-users" outcome="/views/customers"/>
                                     <p:button value="DVD" icon="fa fa-video-camera" outcome="/views/films"/>
-                                    <p:button value="Rapor" icon="fa fa-credit-card"
-                                              rendered="#{sessionScope.userRole eq 'Administrator'}"
-                                              outcome="/views/admin/reports"/>
-                                    <!--                                    <p:commandButton type="button" value="Ödeme" icon="fa fa-area-chart" />-->
                                 </p:toolbarGroup>
                                 <p:toolbarGroup align="right">
                                     <p:commandLink value="#{sessionScope.Staff.firstName}&nbsp;#{sessionScope.Staff.lastName}"

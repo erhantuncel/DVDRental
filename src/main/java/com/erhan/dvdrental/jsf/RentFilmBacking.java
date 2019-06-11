@@ -330,7 +330,7 @@ public class RentFilmBacking implements Serializable {
         rental.setStaff(currentStaff);
         rentalFacade.create(rental);
         System.out.println("Rental is created.");
-
+        
         Payment payment = new Payment();
         payment.setPaymentDate(new Date());
         payment.setLastUpdate(new Date());
@@ -345,6 +345,10 @@ public class RentFilmBacking implements Serializable {
         rentalFacade.edit(rental);
         System.out.println("Rental is updated.");
 
+        inventory.getRentalList().add(rental);
+        inventoryFacade.edit(inventory);
+        System.out.println("Inventory is updated.");
+        
         customer.getRentalList().add(rental);
         customer.getPaymentList().add(payment);
         customerFacade.edit(customer);
