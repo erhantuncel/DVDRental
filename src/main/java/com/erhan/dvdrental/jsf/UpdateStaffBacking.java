@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
@@ -101,13 +102,19 @@ public class UpdateStaffBacking implements Serializable {
         return imageStream;
     }
     
-    public void updateStaff() {
+    public String updateStaff() {
         if(imageFromFileUpload != null) {
             selectedStaff.setPicture(imageFromFileUpload);
             setImageFromFileUpload(null);
         }
         selectedStaff.setLastUpdate(new Date());
         getStaffFacade().edit(selectedStaff);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                selectedStaff.getFirstName() + " " + selectedStaff.getLastName() + " güncellendi.", 
+                null));
+        return "staffs?faces-redirect=true";
     }
     
     public void hideUpdateStaffDialog() throws IOException {
