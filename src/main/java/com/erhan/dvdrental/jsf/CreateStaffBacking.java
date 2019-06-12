@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -277,7 +279,12 @@ public class CreateStaffBacking implements Serializable {
         staff.setUserGroup(UserGroup.EMPLOYEE_GROUP);
         staff.setStoreId(store);
         staff.setAddress(address);
-        getStaffFacade().create(staff);        
+        getStaffFacade().create(staff);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            staff.getFirstName() + " " + staff.getLastName() + " eklendi.", 
+                            null));
         return "staffs?faces-redirect=true";
     }
 }
