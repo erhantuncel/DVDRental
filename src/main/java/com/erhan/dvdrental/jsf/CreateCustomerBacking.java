@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -187,6 +188,10 @@ public class CreateCustomerBacking implements Serializable {
         customer.setStore(customerStore);
         customerFacade.create(customer);
         setCustomerId(customer.getCustomerId());
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, customer.getFirstName() 
+                + " " + customer.getLastName() + " eklendi.", null));
         return "customers?faces-redirect=true";
     }
 
