@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -70,8 +71,14 @@ public class UpdateCustomerBacking implements Serializable {
         rentalListTable.reset();
     }
     
-    public void updateCustomer() {
+    public String updateCustomer() {
         selectedCustomer.setLastUpdate(new Date());
         getCustomerFacade().edit(selectedCustomer);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName() + " güncellendi.", 
+                null));
+        return "customers?faces-redirect=true";
     }
 }

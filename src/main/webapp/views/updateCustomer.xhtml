@@ -10,7 +10,6 @@
         <p:dialog id="updateCustomerDialog" widgetVar="updateCustomerDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Müşteri Bilgileri Güncelleme"
                   width="750" height="420" closable="false" dynamic="true">
-            <p:ajax event="close" listener="#{updateCustomerBacking.hideUpdateCustomerDialog()}" />
             <h:form id="updateCustomerForm">
                 <p:panelGrid id="updateCustomerPanelGrid" styleClass="ui-noborder" style="width: 100%;">
                     <p:row>
