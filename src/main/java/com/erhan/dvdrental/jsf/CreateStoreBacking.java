@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -236,6 +238,12 @@ public class CreateStoreBacking implements Serializable {
         managerStaff.setStoreId(newStore);
         staffFacade.edit(managerStaff);
         
+        String storeString = newStore.getAddress().getCity().getCity() 
+                + "-" + newStore.getAddress().getCity().getCountry().getCountry() +
+                " (" + newStore.getAddress().getDistrict() + ")";
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, storeString + " eklendi.", null));
         return "stores?faces-redirect=true";
     }
 }
