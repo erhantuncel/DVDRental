@@ -10,10 +10,9 @@
         <p:dialog id="updateStoreManagerDialog" widgetVar="updateStoreManagerDialog" appendTo="@(body)"
                   modal="true" resizable="false" header="Şube Yetkilisi Güncelleme"
                   width="650" height="320" closable="false">
-            <p:ajax event="close" listener="#{updateStoreBacking.hideUpdateStoreDialog()}" />
             <h:form id="updateStoreManagerForm">
-                <p:panelGrid id="updateStoreManagerPanelGrid" styleClass="ui-noborder" style="width: 100%;">
-                    <p:row>
+                <p:panelGrid id="updateStoreManagerPanelGrid" styleClass="ui-noborder" style="width: 100%; height: 320px;">
+                    <p:row style="vertical-align: top;">
                         <p:column>
                             <p:dataTable id="staffListNotManager" value="#{updateStoreBacking.staffListForManageStore}"
                                          var="staff" rowKey="#{staff.staffId}" emptyMessage="Personel bulunamadı."
@@ -43,7 +42,7 @@
                             </p:dataTable>
                         </p:column>
                     </p:row>
-                    <p:row>
+                    <p:row style="vertical-align: bottom;">
                         <p:column colspan="2">
                             <p:commandButton value="Kapat" icon="fa fa-close" style="float: right;"
                                              oncomplete="PF('updateStoreManagerDialog').hide();"/>

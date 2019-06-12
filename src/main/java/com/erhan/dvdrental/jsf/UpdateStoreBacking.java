@@ -132,7 +132,7 @@ public class UpdateStoreBacking implements Serializable {
         return "stores?faces-redirect=true";
     }
     
-    public void updateManagerSelectedStore() {
+    public String updateManagerSelectedStore() {
         Staff oldManager = selectedStore.getManagerStaff();
         
         selectedManager.setUserGroup(UserGroup.ADMINISTRATOR_GROUP);
@@ -147,5 +147,11 @@ public class UpdateStoreBacking implements Serializable {
         oldManager.setStoreToManage(null);
         oldManager.setUserGroup(UserGroup.EMPLOYEE_GROUP);
         staffFacade.edit(oldManager);
+        String actionMessage = selectedStore.getStoreId() + " nolu şubenin yetkilisi " 
+                + selectedManager.getFirstName() + " " + selectedManager.getLastName() + " oldu.";
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, actionMessage , null));
+        return "stores?faces-redirect=true";
     }
 }
