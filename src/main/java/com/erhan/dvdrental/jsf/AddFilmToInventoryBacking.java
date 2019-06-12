@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -78,7 +79,7 @@ public class AddFilmToInventoryBacking implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("films.xhtml");
     }
     
-    public void addFilmToInventory() {
+    public String addFilmToInventory() {
         System.out.println("Add film to inventory method is invoked.");
         List<Inventory> inventoryList = new ArrayList<>();
         for(int i=0; i<count; i++) {
@@ -93,6 +94,15 @@ public class AddFilmToInventoryBacking implements Serializable {
         System.out.println(inventoryList.size() + " " + selectedFilm.getTitle() + " added to " 
                 + store.getAddress().getCity().getCity() + " - " 
                 + store.getAddress().getCity().getCountry().getCountry() + " inventory");
-        
+        String actionMessage = count + " adet " + selectedFilm.getTitle() + " " 
+                + store.getAddress().getCity().getCity() + "-" 
+                + store.getAddress().getCity().getCountry().getCountry() 
+                + "(" + store.getAddress().getDistrict() + ") şubesine eklendi."; 
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                actionMessage, 
+                null));
+        return "films?faces-redirect=true";
     }
 }
