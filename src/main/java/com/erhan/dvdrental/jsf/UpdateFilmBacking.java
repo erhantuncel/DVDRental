@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -148,7 +149,7 @@ public class UpdateFilmBacking implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("films.xhtml");
     }
     
-    public void updateFilm() {
+    public String updateFilm() {
         System.out.println("updateFilm is invoked.");
         selectedFilm.setCategoryList(selectedCategories);
         if(newActorList != null && newActorList.size() > 0) {
@@ -171,6 +172,12 @@ public class UpdateFilmBacking implements Serializable {
         selectedFilm.setLastUpdate(new Date());
         filmFacade.edit(selectedFilm);
         System.out.println(selectedFilm.getTitle() + " is updated.");
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage("actionResult", new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                selectedFilm.getTitle() + " güncellendi.", 
+                null));
+        return "films?faces-redirect=true";
     }
 
 }
