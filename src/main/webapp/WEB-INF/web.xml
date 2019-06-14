@@ -29,7 +29,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            300
+            1
         </session-timeout>
     </session-config>
     <welcome-file-list>
@@ -39,6 +39,11 @@
     <error-page>
         <error-code>403</error-code>
         <location>/views/error.xhtml</location>
+    </error-page>
+    
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/login.xhtml</location>
     </error-page>
     
     <login-config>
