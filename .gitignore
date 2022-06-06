@@ -18,6 +18,9 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+# Only Local
+zOnlyLocal
+
 # Log file
 *.log
 
